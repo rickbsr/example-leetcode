@@ -1,2 +1,0 @@
-# LeetCode
-Leetcode with Java
