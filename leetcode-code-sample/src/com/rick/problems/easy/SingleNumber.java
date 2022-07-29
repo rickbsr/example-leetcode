@@ -16,7 +16,7 @@ public class SingleNumber {
         // 排序法
         res = new SingleNumber().singleNumberSort(nums);
 
-        // By X-Or
+        // 互斥或法
         res = new SingleNumber().singleNumberXor(nums);
 
         System.out.println(res);
