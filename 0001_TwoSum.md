@@ -36,7 +36,7 @@ if (nums.length == 2) return new int[]{0, 1};
 
 其中，第一個「迴圈」負責塞值，目的在於建立一個容易比對的樣板；此處筆者偏好以「Map」的結構作為樣板的容器；而樣板的建立邏輯是以「陣列的值」當作為「Map」結構的 「key」，「陣列的索引」作為「Map」結構的 「 value」，示意圖如下：
 
-![](pics/0001_two_sum_arr2map.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0001_two_sum_arr2map.png?raw=true)
 
 代碼如下：
 
