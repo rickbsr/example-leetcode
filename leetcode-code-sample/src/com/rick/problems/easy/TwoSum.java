@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TwoSum {
-
     public static void main(String[] args) {
         int nums[] = {2, 7, 11, 15}, target = 9;
         int[] res = new TwoSum().twoSum(nums, target);
@@ -12,6 +11,9 @@ public class TwoSum {
     }
 
     public int[] twoSum(int[] nums, int target) {
+
+        if (nums.length == 2) return new int[]{0, 1}; // 可有可無，其實對效能影響不大
+
         Map<Integer, Integer> map = new HashMap<>();
         // 『值』當作 key，『順序』當作 value
         for (int i = 0; i < nums.length; i++) map.put(nums[i], i);
@@ -21,6 +23,6 @@ public class TwoSum {
             if (map.containsKey(complement) && map.get(complement) != i)
                 return new int[]{i, map.get(complement)}; // 若符合條件則為答案
         }
-        return null; // 代表沒有符合
+        return null;
     }
 }
