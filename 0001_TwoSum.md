@@ -1,6 +1,8 @@
 # LeetCode 0001. Two Sum
 Leetcode：Java
 
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode-ric.jpeg?raw=true)
+
 ---
 
 ## 概要
