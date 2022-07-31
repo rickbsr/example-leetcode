@@ -29,7 +29,7 @@ Leetcode：Java
 
 若以「土法煉鋼」的方式來解題，通常會分為兩個階段，第一階段是將「數列」轉換成「數值」；想當然耳，第二階段就是將「數值」轉換回「數列」，示意圖如下：
 
-![](pics/0066_plus_one_brute_force.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0066_plus_one_brute_force.png?raw=true)
 
 事實上，不論是將「數列」轉換成「數值」，亦或是將「數值」轉換回「數列」，在筆者的認知中，其方式通常就兩種，分別是「字串轉換」以及「數學運算」；於是乎，筆者就撰寫了初版的代碼，如下：
 
@@ -62,7 +62,7 @@ class Solution {
 
 事實上，以本題來說，「位數」只有在一個情況下會改變，就是該數值為「10＾n - 1」，也就是全部為「9」的情況，如下：
 
-![](pics/0066_plus_one_10n_sub_1.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0066_plus_one_10n_sub_1.png?raw=true)
 
 然後，筆者就把這段程式碼放到「LeetCode」上去驗證，結果顯示：「Wrong Answer」；其實思路是正確地，但問題在於「數值」的大小，所以筆者又嘗試了「long」、「double」；但通通闖關失敗；不是數值不夠，就是精度不足，實在令人生氣。
 
