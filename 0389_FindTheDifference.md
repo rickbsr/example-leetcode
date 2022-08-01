@@ -1,0 +1,46 @@
+# LeetCode 0389. Find the Difference
+Leetcode：Java
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode-ric.jpeg?raw=true)
+
+---
+
+## 概要
+
+#### 題目：[Find the Difference](https://leetcode.com/problems/find-the-difference/)
+
+#### 難度：Easy
+
+---
+
+## 本文
+
+#### 說明
+
+題目會給我們兩個字串，分別為字串「s」和字串「t」，而字串「t」為字串「s」的所有字元隨機排列後，再在任意一個位置插入一個「隨機字元」後組成；也就是說字串「t」會比字串「s」多一個隨機字元，而題目的要求就是要我們找出該字元。
+
+###### 限制：為字串「s」和字串「t」皆為小寫英文字母。
+
+---
+
+#### 解析一、排序法
+
+根據題目敘述，我們可以得知：字串「t」會比字串「s」多一個「隨機字元」。
+
+所以我們可以將「英文字串」拆成一個個「英文字母」，經過「排序」後，再逐一比較，如下：
+
+```java
+class Solution {
+
+}
+```
+
+---
+
+#### 解析二、扣除法
+
+
+
+---
+
+###### tags: `LeetCode` `Easy`
