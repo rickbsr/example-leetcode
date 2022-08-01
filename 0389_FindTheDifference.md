@@ -29,7 +29,7 @@ Leetcode：Java
 
 所以我們只要將字串「排序」後，就能夠輕易比較出差異，概念如下：
 
-![](pics/0389_find_the_difference_sort.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0389_find_the_difference_sort.png?raw=true)
 
 但這邊在實作上會有一個小問題，就是字串無法直接排列，因此，我們會藉由「toCharArray()」將字串轉換成一個個的字元，代碼如下：
 
