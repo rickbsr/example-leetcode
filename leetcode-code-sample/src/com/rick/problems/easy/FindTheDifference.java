@@ -1,7 +1,9 @@
 package com.rick.problems.easy;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class FindTheDifference {
 
@@ -11,7 +13,9 @@ public class FindTheDifference {
 
         res = new FindTheDifferenceSort().findTheDifference(s, t);
 
-        res = new FindTheDifferenceSub().findTheDifference(s, t);
+        res = new FindTheDifferenceSubList().findTheDifference(s, t);
+
+        res = new FindTheDifferenceSubMath().findTheDifference(s, t);
 
         res = new FindTheDifferenceXor().findTheDifference(s, t);
 
@@ -36,7 +40,16 @@ class FindTheDifferenceSort {
     }
 }
 
-class FindTheDifferenceSub {
+class FindTheDifferenceSubList {
+    public char findTheDifference(String s, String t) {
+        List<Character> characterList = new ArrayList<>();
+        for (Character c : t.toCharArray()) characterList.add(c);
+        for (Character c : s.toCharArray()) characterList.remove(c);
+        return characterList.iterator().next();
+    }
+}
+
+class FindTheDifferenceSubMath {
     public char findTheDifference(String s, String t) {
         int res = 0;
         for (int c : t.toCharArray()) res += c; // 計算 t 的總值
@@ -47,9 +60,8 @@ class FindTheDifferenceSub {
 
 class FindTheDifferenceXor {
     public char findTheDifference(String s, String t) {
-        int res = 0;
-        for (int c : t.toCharArray()) res += c; // 計算 t 的總值
-        for (int c : s.toCharArray()) res -= c; // 扣去 s 的總值
-        return (char) res; // 將剩餘的值轉乘對應照的文字
+        char res = 0;
+        for (char c : (t + s).toCharArray()) res ^= c;
+        return res;
     }
 }
