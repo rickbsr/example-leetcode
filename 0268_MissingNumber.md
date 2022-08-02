@@ -29,7 +29,7 @@ Leetcode：Java
 
 這就意味著，如果我們將「數列」排序，其內容就會是由「0」到「n」的升冪排列；也就是說，在不碰到缺失的情況下，其數列的內容「數值」就會與「數列索引值」相同，概念圖如下：
 
-![](pics/0268_missing_number_sort.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0268_missing_number_sort.png?raw=true)
 
 而實作代碼如下：
 
