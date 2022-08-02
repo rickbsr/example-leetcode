@@ -1,4 +1,4 @@
 # LeetCode
-Leetcode with Java
+Coder-Journal：LeetCode 系列
 
 ![](pics/leetcode-rick.jpeg)
