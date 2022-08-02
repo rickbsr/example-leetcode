@@ -29,7 +29,7 @@ Leetcode：Java
 
 其主要邏輯就是：若兩個數列元素的數值相同，那一旦經排序，其兩者必會相鄰；所以要檢查該數列是不是唯一的方式就是，將該數列排序後，檢查每個元素與其相鄰的元素是否相同，若皆為不同，則可推斷該員數是唯一值，示意圖如下：
 
-![](pics/0217_contains_duplicate_sort.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0217_contains_duplicate_sort.png?raw=true)
 
 代碼如下：
 
