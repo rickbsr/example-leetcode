@@ -5,48 +5,48 @@ import java.util.*;
 public class NRepeatedElementInSize2NArray {
 
     public static void main(String[] args) {
-        int[] A = {2, 6, 2, 1};
-        int res = new NRepeatedElementInSize2NArray().repeatedNTimes(A);
+        int res, nums[] = {2, 6, 2, 1};
+        res = new NRepeatedElementInSize2NArrayList().repeatedNTimes(nums);
+        res = new NRepeatedElementInSize2NArraySet().repeatedNTimes(nums);
+        res = new NRepeatedElementInSize2NArrayMap().repeatedNTimes(nums);
+        res = new NRepeatedElementInSize2NArraySort().repeatedNTimes(nums);
         System.out.println(res);
     }
+}
 
-    public int repeatedNTimes(int[] A) {
+class NRepeatedElementInSize2NArrayList {
+    public int repeatedNTimes(int[] nums) {
         List<Integer> list = new ArrayList<>();
         int i = 0;
-        while (!list.contains(A[i])) list.add(A[i++]);
-        return A[i];
+        do list.add(nums[i++]);
+        while (!list.contains(nums[i]));
+        return nums[i];
     }
+}
 
-    public int repeatedNTimesBySet(int[] A) {
+class NRepeatedElementInSize2NArraySet {
+    public int repeatedNTimes(int[] nums) {
         Set<Integer> set = new HashSet<>();
-        int i = 0, size = set.size();
-        do set.add(A[i++]);
-        while (set.size() != size++);
-        return A[i - 1];
+        int i = 0;
+        do set.add(nums[i++]);
+        while (set.size() == i);
+        return nums[i - 1];
     }
+}
 
-    public int repeatedNTimesByMap(int[] A) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i : A) if (map.put(i, 1) != null) return i;
+class NRepeatedElementInSize2NArrayMap {
+    public int repeatedNTimes(int[] nums) {
+        Map<Integer, Boolean> map = new HashMap<>();
+        for (int i : nums)
+            if (map.put(i, true) != null) return i;
         return -1;
     }
+}
 
-    public int repeatedNTimesBySoft(int[] A) {
-        Arrays.sort(A);
-        return A[A[0] != A[A.length / 2 - 1] ? A.length / 2 : 0];
+class NRepeatedElementInSize2NArraySort {
+    public int repeatedNTimes(int[] nums) {
+        Arrays.sort(nums);
+        return nums[nums[0] != nums[nums.length / 2 - 1] ? nums.length / 2 : 0];
     }
 
-    public int repeatedNTimesBySoft2(int[] A) {
-        Arrays.sort(A);
-        return A[A[A.length - 1] != A[A.length / 2] ? A.length / 2 - 1 : A.length - 1];
-    }
-
-    public int repeatedNTimesBySoftForDetail(int[] A) {
-        Arrays.sort(A);
-        int len = A.length, halfOfLen = len / 2;
-        if (A[halfOfLen - 1] == A[halfOfLen]) return A[halfOfLen];
-        else if (A[0] == A[halfOfLen - 1]) return A[0]; // 狀況 1
-        else if (A[len - 1] == A[halfOfLen]) return A[len - 1]; // 狀況 4
-        return -1;
-    }
 }
