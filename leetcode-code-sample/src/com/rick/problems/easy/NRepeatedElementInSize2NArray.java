@@ -36,9 +36,9 @@ class NRepeatedElementInSize2NArraySet {
 
 class NRepeatedElementInSize2NArrayMap {
     public int repeatedNTimes(int[] nums) {
-        Map<Integer, Boolean> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         for (int i : nums)
-            if (map.put(i, true) != null) return i;
+            if (map.put(i, i) != null) return i;
         return -1;
     }
 }
@@ -46,7 +46,6 @@ class NRepeatedElementInSize2NArrayMap {
 class NRepeatedElementInSize2NArraySort {
     public int repeatedNTimes(int[] nums) {
         Arrays.sort(nums);
-        return nums[nums[0] != nums[nums.length / 2 - 1] ? nums.length / 2 : 0];
+        return nums[nums[0] == nums[nums.length / 2 - 1] ? 0 : nums.length / 2];
     }
-
 }
