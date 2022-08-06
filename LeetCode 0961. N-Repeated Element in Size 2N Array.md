@@ -83,15 +83,15 @@ class Solution {
 
 換句話說，在該數列中，有一半的元素其數值相同；在這個前提下，若重覆的「n」個元素是數列中的「最小值」，則代表該數列經排序後，其「前一半」的元素皆為「重覆的元素」，如下：
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/0961_n-repeated_element_in_size_2n_array_min_a.png?raw=true)
+![](https://raw.githubusercontent.com/rickbsr/LeetCode/main/pics/0961_n-repeated_element_in_size_2n_array_min_a.png)
 
 反之，若重覆的「n」個元素是數列中的「最大值」，則該數列經排序後，其「後一半」的元素就會都是重覆的元素，如下：
 
-![](https://github.com/rickbsr/LeetCode/raw/main/pics/0961_n-repeated_element_in_size_2n_array_max_a.png)
+![](https://raw.githubusercontent.com/rickbsr/LeetCode/main/pics/0961_n-repeated_element_in_size_2n_array_max_a.png)
 
 那如果重覆的「n」個元素非數列的「極端值」，那麼意味著其「中間項」，也就是第「n - 1」項和第「n」項必為重覆的元素，如下：
 
-![](https://github.com/rickbsr/LeetCode/raw/main/pics/0961_n-repeated_element_in_size_2n_array_normal_a.png)
+![](https://raw.githubusercontent.com/rickbsr/LeetCode/main/pics/0961_n-repeated_element_in_size_2n_array_normal_a.png)
 
 根據上述的思路，我們來整理實作邏輯，如果「中間兩項」相等，則該兩項的元素數值就為「返回值」；若不相等，那麼要其就有可能是「首項」或「末項」，是吧？
 
