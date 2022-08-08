@@ -47,7 +47,7 @@ class MaximumAverageSubarrayIBruteForce {
 
 上述代碼中，外層的迴圈是針對「整個數列」遍歷，其中的「i」即代表著各個「k」數列的起點；而外層迴圈的終點則為「nums.length - k」，概念如下：
 
-![](pics/0643_maximum_average_subarray_i_nk.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0643_maximum_average_subarray_i_nk.png?raw=true)
 
 接著再藉由內層迴圈依序地將各個「K Array」的數值加總，並兩兩相比取其高。
 
@@ -55,7 +55,7 @@ class MaximumAverageSubarrayIBruteForce {
 
 但實際於「LeetCode」上運行時卻會噴出錯誤，如下：
 
-![](pics/0643_maximum_average_subarray_i_error.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0643_maximum_average_subarray_i_error.png?raw=true)
 
 錯誤是「Time Limit Exceeded」，這是因為「雙層迴圈」的效能實在太差；但該邏輯是沒有問題的，事實上幾年前筆者曾以同樣的代碼執行通過；大概是「LeetCode」的限制越來越嚴格了吧。
 
@@ -69,7 +69,7 @@ class MaximumAverageSubarrayIBruteForce {
 
 而下一個「K Array」、下下一個「K Array」的差異皆是類推，示意圖如下：
 
-![](pics/0643_maximum_average_subarray_i_diff.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0643_maximum_average_subarray_i_diff.png?raw=true)
 
 根據此邏輯，其實實作如下：
 
@@ -91,7 +91,7 @@ class Solution {
 
 同樣將代碼放到「LeetCode」上執行，結果「輕鬆通過」，如下：
 
-![](pics/0643_maximum_average_subarray_i_pass.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0643_maximum_average_subarray_i_pass.png?raw=true)
 
 由此可見，「兩次迴圈」遠比「雙層迴圈」有效率許多；那能不能「一個迴圈」呢？
 
