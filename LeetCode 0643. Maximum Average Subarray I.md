@@ -17,7 +17,7 @@ Leetcode：Java
 
 #### 說明
 
-題目會給我們一個由「n」個元素所組成的整數數列：「nums」，以及一個整數「k」；然後要求我們返回在「整數數列」中，連續「k」個元素數值總和的最大值。
+題目會給我們一個由「n」個元素所組成的整數數列：「nums」，以及一個整數「k」；然後要求我們返回在「整數數列」中，連續「k」個元素數值總和的「最大平均值」。
 
 ###### 限制：整數數列「nums」的長度為「n」。
 
@@ -25,86 +25,92 @@ Leetcode：Java
 
 #### 解析一、暴力破解法
 
-根據題目敘述，我們可以得知：字串「t」除了比字串「s」多一個「隨機字元」外，其組成的字母是一模一樣的。
+在開始解析題目之前，我們先來定義一下名詞；以下本文會將「連續『k』個元素組成的次陣列」稱之為「K Array」。
 
-所以我們只要將字串「排序」後，就能夠輕易比較出差異，概念如下：
+以這題來說，其實直接以「暴力破解」的方式即可以解決；其概念就是將所有的「K Array」個別計算出來後，再以兩兩相比的方式找出最大值。
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/0389_find_the_difference_sort.png?raw=true)
-
-但這邊在實作上會有一個小問題，就是字串無法直接排列，因此，我們會藉由「toCharArray()」將字串轉換成一個個的字元，代碼如下：
+按著這個思路來實作，其最直覺的方式就是利用雙層迴圈，代碼如下：
 
 ```java
-class Solution {
-    public char findTheDifference(String s, String t) {
-        char[] sChars, tChars;
-
-        sChars = s.toCharArray();
-        tChars = t.toCharArray();
-
-        Arrays.sort(sChars);
-        Arrays.sort(tChars);
-
-        for (int i = 0; i < s.length(); i++)
-            if (tChars[i] != sChars[i]) return tChars[i];
-
-        return tChars[t.length() - 1];  
+class MaximumAverageSubarrayIBruteForce {
+    public double findMaxAverage(int[] nums, int k) {
+        int tempSum, maxSum = Integer.MIN_VALUE;
+        for (int i = 0; i <= nums.length - k; i++) {
+            tempSum = 0;
+            for (int j = 0; j < k; j++) tempSum += nums[i + j];
+            maxSum = Math.max(maxSum, tempSum);
+        }
+        return ((double) maxSum) / k;
     }
 }
 ```
+
+上述代碼中，外層的迴圈是針對「整個數列」遍歷，其中的「i」即代表著各個「k」數列的起點；而外層迴圈的終點則為「nums.length - k」，概念如下：
+
+![](pics/0643_maximum_average_subarray_i_nk.png)
+
+接著再藉由內層迴圈依序地將各個「K Array」的數值加總，並兩兩相比取其高。
+
+然而，當外層迴圈執行到索引起始為「nums.length - k」時，即意味著我們已經將「整個數列」中所有可能的「k」數列都輪詢過了；因此，將「最大值」除以「k」的值即為題目所需的答案。
+
+但實際於「LeetCode」上運行時卻會噴出錯誤，如下：
+
+![](pics/0643_maximum_average_subarray_i_error.png)
+
+錯誤是「Time Limit Exceeded」，這是因為「雙層迴圈」的效能實在太差；但該邏輯是沒有問題的，事實上幾年前筆者曾以同樣的代碼執行通過；大概是「LeetCode」的限制越來越嚴格了吧。
 
 ---
 
-#### 解析二、扣除法
+#### 解析二、差異法
 
-與「排序法」的思路不同，「扣除法」的概念是字串「t」扣除字串「s」，剩下的部分就是那個被加入的「隨機字母」。
+實際上，「差異法」與「暴力破解法」的思路非常相似；其唯一地不同在於：「差異法不再須要一個一個地將每個『K Array』加總後比較；而是去直接去比較每個『K Array』差異的部分。」。
 
-根據這個思路，其比較直覺的作法是利用「容器」，我們可以先將組成「t」字串所有的「字元」加入一個容器中，再根據「s」字串的「字母」將之一個個移出容器；如此一來，當其執行完畢時，容器中的「剩餘字母」就是字串「t」中所加入的「字母」，其實作如下：
+簡單說，若我們以一個「K Array」為「單位」，並以索引「0」至索引「k - 1」的「K Array」作為基準；而它與下一個「K Array」，也就是與索引「1」至索引「k」的「K Array」差異在於後者多了第「k」項，且少了第「0」項。
+
+而下一個「K Array」、下下一個「K Array」的差異皆是類推，示意圖如下：
+
+![](pics/0643_maximum_average_subarray_i_diff.png)
+
+根據此邏輯，其實實作如下：
 
 ```java
 class Solution {
-    public char findTheDifference(String s, String t) {
-        List<Character> characterList = new ArrayList<>();
-        for (Character c : t.toCharArray()) characterList.add(c);
-        for (Character c : s.toCharArray()) characterList.remove(c);
-        return characterList.iterator().next();
+    public double findMaxAverage(int[] nums, int k) {
+        int tempSum = 0, maxSum;
+        for (int i = 0; i < k; i++) tempSum += nums[i]; // 建立基準值
+
+        maxSum = tempSum;
+        for (int i = k; i < nums.length; i++) {
+            tempSum += nums[i] - nums[i - k]; // diff
+            maxSum = Math.max(maxSum, tempSum);
+        }
+        return ((double) maxSum) / k;
     }
 }
 ```
 
-事實上，比起「排序法」，筆者更偏好此方式，因為它更直覺、更好懂；但是，因為它牽涉到容器的進出，所以在效能上多少會被詬病。
+同樣將代碼放到「LeetCode」上執行，結果「輕鬆通過」，如下：
 
-既然問題出在容器，仔細想想，容器是必要的嗎？
+![](pics/0643_maximum_average_subarray_i_pass.png)
 
-有學過「ACSII 」的人應該都知道，它是基於「拉丁字母」的一套編碼系統，在「ACSII 」中，每一個「英文字母」都有著對應的「數值」；這也就意味著，我們可以藉由「數學運算」來處理這個問題。
+由此可見，「兩次迴圈」遠比「雙層迴圈」有效率許多；那能不能「一個迴圈」呢？
 
-簡單地說就是將字串「t」的所有「字元」都轉換成「數值」後加總，再減去字串「s」的所有「字元」加總的「數值」，其剩下的「數值」所代表的「字母」就是字串「t」中被加入的「隨機字母」，代碼如下：
+事實上是可以的，同樣是「差異法」，我們只是將「第一個迴圈」，也就是建立基準值的部分與比較差異的部分合併處理而已，代碼如下：
 
 ```java
 class Solution {
-    public char findTheDifference(String s, String t) {
-        int res = 0;
-        for (int c : t.toCharArray()) res += c; // 計算 t 的總值
-        for (int c : s.toCharArray()) res -= c; // 扣去 s 的總值
-        return (char) res; // 將剩餘的值轉乘對應照的文字
+    public double findMaxAverage(int[] nums, int k) {
+        int tempSum = 0, maxSum = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            tempSum += (i <= k - 1) ? nums[i] : nums[i] - nums[i - k];
+            if (i >= k - 1 && tempSum > maxSum) maxSum = tempSum;
+        }
+        return ((double) maxSum) / k;
     }
 }
 ```
 
-如此一來，雖然「解題思路」與使用容器的方式是相同的，但是效能就會得到相當顯著的改善，事實上，此處也可以用「互斥或」的方式來解題，其也是利用「互斥或與同一數值運算兩次後，其會與原來的數值一樣。」的特性。
-
-其概念也是類似，因為字串「t」只比字串「s」多一個「隨機字母」；也就是說，除了「隨機字母」以外，其它的所有字母都為可以被「成對」；既然「成對」，也就意味著，我只要用「互斥或」運算，它就會相互抵銷，代碼如下：
-
-```java
-class Solution {
-    public char findTheDifference(String s, String t) {
-        char res = 0;
-        for (char c : (t + s).toCharArray()) res ^= c;
-        return res;
-    }
-}
-```
-
-是不是相當的簡潔優雅？
+雖然程式碼略顯難讀，但邏輯與思路是完全一樣的。
 
 ---
 
