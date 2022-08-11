@@ -1,4 +1,4 @@
-package com.rick.problems.easy;
+package com.rick.problems.medium;
 
 public class RepeatedStringMatch {
 
@@ -35,4 +35,8 @@ public class RepeatedStringMatch {
             return n + 2;
         } else return -1;
     }
+}
+
+class RepeatedStringMatchMath {
+
 }
