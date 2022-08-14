@@ -13,7 +13,7 @@ public class CountPrimes {
     public int countPrimes(int n) {
         int count = 0;
         boolean[] notPrime = new boolean[n]; // 紀錄表
-        for (int i = 2; i < n; i++) // 從 2 至 n 遍訪
+        for (int i = 3; i < n; i++) // 從 2 至 n 遍訪
             if (!notPrime[i]) { // 查詢對照表
                 count++;
                 for (int j = 2; i * j < n; j++) notPrime[i * j] = true;
