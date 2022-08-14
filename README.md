@@ -1,9 +1,9 @@
 # LeetCode
-Coder-Journal：LeetCode 系列
+LeetCode：Java
 
 ---
 
-![](pics/leetcode-rick.jpeg)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode.png?raw=true)
 
 ---
 
