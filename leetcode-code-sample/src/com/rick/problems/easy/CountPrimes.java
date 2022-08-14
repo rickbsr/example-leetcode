@@ -1,27 +1,52 @@
 package com.rick.problems.easy;
 
-import java.util.BitSet;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class CountPrimes {
 
     public static void main(String[] args) {
-        int n = 5;
-        int res = new CountPrimes().countPrimes(n);
+        int n = 1000000;
+        int res = new CountPrimesMulSkipEven().countPrimes(n);
         System.out.println(res);
+
+        System.out.println(new Solution().countPrimes(n));
     }
 
-    public int countPrimes(int n) {
-        int count = 0;
-        boolean[] notPrime = new boolean[n]; // 紀錄表
-        for (int i = 3; i < n; i++) // 從 2 至 n 遍訪
-            if (!notPrime[i]) { // 查詢對照表
-                count++;
-                for (int j = 2; i * j < n; j++) notPrime[i * j] = true;
-            }
+    public int countPrimesMul(int n) {
+        if (n < 3) return 0;
+        boolean[] notPrime = new boolean[n];
+        int count = n / 2;
+        for (int i = 2; i * i < n; i += 2) {
+            if (notPrime[i]) continue;
+            for (int j = i * i; j < n; j += i * 2)
+                if (!notPrime[j]) {
+                    count--;
+                    notPrime[j] = true;
+                }
+        }
         return count;
     }
+}
 
-    public int countPrimesByOptimizedStandard(int n) {
+
+class CountPrimesMul {
+
+}
+
+class CountPrimesMulSkipEven {
+    public int countPrimes(int n) {
+        if (n < 3) return 0;
+        Set<Integer> notPrimes = new HashSet<>();
+        for (int i = 3; i * i < n; i += 2)
+            if (!notPrimes.contains(i))
+                for (int j = i * i; j < n; j += i * 2) notPrimes.add(j);
+        return n / 2 - notPrimes.size();
+    }
+}
+
+class Solution {
+    public int countPrimes(int n) {
         if (n < 3) return 0;
         boolean[] notPrime = new boolean[n];
         int count = n / 2;
@@ -33,17 +58,6 @@ public class CountPrimes {
                     notPrime[j] = true;
                 }
         }
-        return count;
-    }
-
-    public int countPrimesByBigSet(int n) {
-        int count = 0;
-        BitSet primes = new BitSet(n);
-        for (int i = 2; i < n; i++)
-            if (!primes.get(i)) {
-                count++;
-                for (int j = i + i; j < n; j += i) primes.set(j);
-            }
         return count;
     }
 }

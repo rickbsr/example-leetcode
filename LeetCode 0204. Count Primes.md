@@ -9,7 +9,7 @@ Leetcode：Java
 
 #### 題目：[Count Primes](https://leetcode.com/problems/count-primes/)
 
-#### 難度：Easy
+#### 難度：Medium
 
 ---
 
