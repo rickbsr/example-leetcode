@@ -1,7 +1,7 @@
 # LeetCode 0204. Count Primes
 Leetcode：Java
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode-rick.jpeg?raw=true)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode.png?raw=true)
 
 ---
 
@@ -17,85 +17,128 @@ Leetcode：Java
 
 #### 說明
 
-題目會給我們一個整數「n」，並要求我們算出「n」一共有多少個「質因數」。
+題目會給我們一個整數「n」，並要求我們算出小於「n」的「質數」共有幾個。
 
 ###### 限制：整數不會是負數。
 
 ---
 
-#### 解析一、排序法
+#### 解析一、暴力破解法
 
-通常遇到這種與「找差異」相關的題型，其多數可以藉由排序法解決。
+如果兩個整數之間存在整除關係，「被除數」就是「除數」的「倍數」，反之，「除數」就是「被除數」因數；而質數，代表該數除了「1」與「本身」以外，沒有任何的因數。
 
-其主要邏輯就是：若兩個數列元素的數值相同，那一旦經排序，其兩者必會相鄰；所以要檢查該數列是不是唯一的方式就是，將該數列排序後，檢查每個元素與其相鄰的元素是否相同，若皆為不同，則可推斷該員數是唯一值，示意圖如下：
+而題目要求我們找出小於「n」的所有「質數」的數量；所以，關鍵就是「質數的判斷」。
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/0217_contains_duplicate_sort.png?raw=true)
-
-代碼如下：
+所以「暴力破解法」就是我們將小於「n」的整數，從「2」開始逐一判斷它是否為質數，代碼如下：
 
 ```java
-class MissingNumberSoft {
-    public int missingNumber(int[] nums) {
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length; i++) if (i != nums[i]) return i;
-        return nums.length;
+class Solution {
+    public int countPrimes(int n) {
+        int res = 0;
+        for (int i = 2; i < n; i++)
+            if (isPrime(i)) res++;
+        return res;
+    }
+
+    private boolean isPrime(int i) {
+        for (int j = 2; j < i; j++)
+            if (i % j == 0) return false;
+        return true;
     }
 }
 ```
+
+雖然「暴力破解法」的效能本來就不可能太好，但我們還是多少地優化一下；試想，除了「2」以外，還有其它的「偶數」有可能會是「質數」嗎？
+
+答案是沒有，因此，我們在遍歷小於「n」的整數時，我們不須要逐個整數去檢查是否為「質數」，而是僅須針對「奇數」去檢查即可，因此，我們上述的代碼稍微調整一下，如下：
+
+```java
+class Solution {
+    public int countPrimes(int n) {
+        int res = 0;
+        if (n < 3) return res;
+        for (int i = 3; i < n; i += 2) // 從 3 開始, 一次加 2
+            if (isPrime(i)) res++;
+        return res + 1; // 因為 2 也為質數，故須加 1
+    }
+
+    public boolean isPrime(int i) {
+        for (int j = 2; j < i; j++)
+            if (i % j == 0) return false;
+        return true;
+    }
+}
+```
+
+其兩段程式碼的差異，就在第一個「迴圈」，因為只要檢查「奇數」，所以我們從「3」開始，每次加「2」；最後，返回的時候別忘了，因為我們是從「3」開始，所以其實也忽略了「2」，因此，要把「2」補回去，故必須再加「1」，搞定。
+
+是不是簡單，也非常直觀？但要注意的是，雖然上述代碼的邏輯都沒有問題，不過若實際將代碼拿到「LeetCode」上執行，其結果是：「Time Limit Exceeded」。
+
+沒錯，問題就出在效能，好歹這題也是「中等」難度的題目，如果蠻幹就能輕鬆過關，是不是也太不符合其難度了。
 
 ---
 
-#### 解析二、容器法
+#### 解析二、埃拉托斯特尼篩法
 
-除了「排序法」以外，「容器法」也是使用的解題方式。
+既然蠻幹不行，只好掏出「找質數」的知名演算法：「[Sieve of Eratosthenes](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)」。
 
-以這題的情境，比較直觀的作法是使用「Set」，主要是藉由「Set」的特性：容器內元素須為唯一值。
+其實它的原理是以質數為基準，排除其「倍數」，因為質數的倍數，必為「合數」；舉例來說，因為「2」是質數，但「2 * n」就不是，例如「4」、「6」、「8」⋯等；「3」同樣也是，「3」是質數，但「3 * n」必為合數；然後是「5」、「7」、「11」⋯以此類推，概念如下：
 
-實作方式就是將數列元素逐一放到「Set」後，去比對「Set」的「size()」與數列的「length」是否相同，若相同，則代表該數列的元素皆為唯一值，代碼如下：
+![](pics/0204_count_primes.png)
+
+而實作的代碼如下：
 
 ```java
 class Solution {
-    public boolean containsDuplicate(int[] nums) {
-        Set<Integer> set = new HashSet<>();
-        for (int i : nums) set.add(i);
-        return set.size() != nums.length; // 判斷個數是否相同
+    public int countPrimes(int n) {
+        if (n < 3) return 0;
+        Set<Integer> notPrimes = new HashSet<>();
+        for (int i = 3; i * i < n; i += 2)
+            if (!notPrimes.contains(i))
+                for (int j = i * i; j < n; j += i * 2) notPrimes.add(j);
+        return n / 2 - notPrimes.size();
     }
 }
 ```
 
-如果使用「Stream」，可以達到一行解的效果，如下：
+上述代碼中，第一個「迴圈」的起始值是「3」，實際上，也可以以「2」作為起始值；這麼處理是為了程式碼的流暢性；若以「2」為起點，下一個質數是「3」，又因為「偶數」必為合數，所以在遍歷時，若以「2」為起點，下一個數值是加「1」，之後才是加「2」；所以為了便於撰寫，我們直接以「3」作為起點，爾後就同樣都以加「2」為一階。
+
+那「2」怎麼辦？
+
+這我們稍後再談，剛才我們說到第一個「迴圈」的起始值是「3」，那中止條件呢，雖然我們可以設定為「i < n」；但思考一下，假設「n」值為「100」，那麼相乘為「100」的可能組合是「2 * 50」、「4 * 25」、「5 * 20」以及「10 * 10」，然後是反向的「20 * 5」、「25 * 4」、「50 * 2」，示意圖如下：
+
+![](pics/0204_count_primes_pair.png)
+
+而以上述例子來說，「2 * 50」跟「50 * 2」是相同的，「4 * 25」跟「25 * 4」也是如此，以此類推的都是；所以，我們的終點只要設定「i * i < n」即可。
+
+而內部的迴圈其實邏輯也類似，如下：
 
 ```java
-class Solution {
-    public boolean containsDuplicate(int[] nums) {
-        return nums.length != new HashSet<>(Arrays.stream(nums).boxed().collect(Collectors.toList())).size();
-    }
-}
+for (int j = i * i; j < n; j += i * 2) notPrimes.add(j);
 ```
 
-上面的作法是將全部「數列元素」都加入後，再一次判斷；但事實上，我們亦可以在每次加入元素時就判斷「Set」的「size()」有沒有加一，如下：
+之所以起點是「i * i」，這是因為去找小於「i」數值相乘意義不大，舉例來說，若「i」是「5」，那麼「5 * 2」，在「i」為「2」時，「2 * 5」，就已經處理過了；「5 * 3」也一樣，在「i」為「3」時，「3 * 5」；因此，此處的起點為「i * i」即可，而終點邏輯則是相同的。
+
+比較須要注意的是「每次增加的數值」部分，因為此處為內部「迴圈」，是「乘積」；因此，每次加的不是「1」，而是「ｉ」；又因為須跳過「偶數」，因此每次是加「i * 2」。
+
+最後，要說一點是，再返回時，記得先將「n / 2」；這部分就是去除「2」的部分，也就是「偶數」的部分。
+
+但其實這樣的代碼依然無法順利通過「LeetCode」的測試，原因同樣是「Time Limit Exceeded」；因此，我們再將它優化，將容器的部分改成布林陣列來處理，但其實邏輯完全相同，實作如下：
 
 ```java
 class Solution {
-    public boolean containsDuplicate(int[] nums) {
-        Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < nums.length; i++) {
-            set.add(nums[i]);
-            if (set.size() == i) return true;
-        }
-        return false;
-    }
-}
-```
-
-事實上，除了「Set」以外，「Map」也挺適合的，其主要是利用「Map.put()」的回傳值作為判斷的依據；因為「Map.put()」的回傳值是「原本存在」的元素，也就說是，在「Map」為空的情況下，「Map.put()」會回傳「null」，因此我們只要將數列中所有元素一一加入，其回傳值若非「null」，則代表其存在「重覆元素」，程式碼如下：
-
-```java
-class Solution {
-    public boolean containsDuplicate(int[] nums) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int i : nums) if (map.put(i, 0) != null) return true;
-        return false;
+    public int countPrimes(int n) {
+        if (n < 3) return 0;
+        boolean[] notPrime = new boolean[n];
+        int res = n / 2;
+        for (int i = 3; i * i < n; i += 2)
+            if (!notPrime[i])
+                for (int j = i * i; j < n; j += i * 2)
+                    if (!notPrime[j]) {
+                        notPrime[j] = true;
+                        res--;
+                    }
+        return res;
     }
 }
 ```
