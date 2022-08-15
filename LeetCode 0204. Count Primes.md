@@ -84,7 +84,7 @@ class Solution {
 
 其實它的原理是以質數為基準，排除其「倍數」，因為質數的倍數，必為「合數」；舉例來說，因為「2」是質數，但「2 * n」就不是，例如「4」、「6」、「8」⋯等；「3」同樣也是，「3」是質數，但「3 * n」必為合數；然後是「5」、「7」、「11」⋯以此類推，概念如下：
 
-![](pics/0204_count_primes.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0204_count_primes.png?raw=true)
 
 而實作的代碼如下：
 
@@ -107,7 +107,7 @@ class Solution {
 
 這我們稍後再談，剛才我們說到第一個「迴圈」的起始值是「3」，那中止條件呢，雖然我們可以設定為「i < n」；但思考一下，假設「n」值為「100」，那麼相乘為「100」的可能組合是「2 * 50」、「4 * 25」、「5 * 20」以及「10 * 10」，然後是反向的「20 * 5」、「25 * 4」、「50 * 2」，示意圖如下：
 
-![](pics/0204_count_primes_pair.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0204_count_primes_pair.png?raw=true)
 
 而以上述例子來說，「2 * 50」跟「50 * 2」是相同的，「4 * 25」跟「25 * 4」也是如此，以此類推的都是；所以，我們的終點只要設定「i * i < n」即可。
 

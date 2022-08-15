@@ -1,10 +1,8 @@
-package com.rick.problems.easy;
+package com.rick.problems.medium;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class CountPrimes {
-
     public static void main(String[] args) {
         int n = 3, res;
         res = new CountPrimesBruteForce().countPrimes(n);
@@ -12,9 +10,6 @@ public class CountPrimes {
         res = new CountPrimesSieveOfEratosthenes().countPrimes(n);
         res = new CountPrimesSieveOfEratosthenesSet().countPrimes(n);
         System.out.println(res);
-
-        System.out.println(new CountPrimesBruteForce().countPrimes(n));
-        System.out.println(new CountPrimesBruteForceOdd().countPrimes(n));
     }
 }
 
@@ -72,8 +67,6 @@ class CountPrimesSieveOfEratosthenesSet {
         for (int i = 3; i * i < n; i += 2)
             if (!notPrimesSet.contains(i))
                 for (int j = i * i; j < n; j += i * 2) notPrimesSet.add(j);
-
-        System.out.println(notPrimesSet);
         return n / 2 - notPrimesSet.size();
     }
 }
