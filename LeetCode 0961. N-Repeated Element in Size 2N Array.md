@@ -1,7 +1,7 @@
 # LeetCode 0961. N-Repeated Element in Size 2N Array
 Leetcode：Java
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode-rick.jpeg?raw=true)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode.png?raw=true)
 
 ---
 

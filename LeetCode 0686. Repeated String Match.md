@@ -1,7 +1,7 @@
 # LeetCode 0686. Repeated String Match
 Leetcode：Java
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode-rick.jpeg?raw=true)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode.png?raw=true)
 
 ---
 
@@ -46,7 +46,7 @@ int n = (int) Math.ceil((double) b.length() / a.length());
 
 總和上述，若「b」字串為「n * a」字串的「子字串」，那麼「naa」一定就包含了所有可能，範例如下：
 
-![](pics/0686_repeated_string_match_naa.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0686_repeated_string_match_naa.png?raw=true)
 
 而完整的代碼如下：
 

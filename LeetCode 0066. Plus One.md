@@ -1,7 +1,7 @@
 # LeetCode 0066. Plus One
 Leetcode：Java
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode-rick.jpeg?raw=true)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode.png?raw=true)
 
 ---
 

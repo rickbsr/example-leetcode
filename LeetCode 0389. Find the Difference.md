@@ -1,7 +1,7 @@
 # LeetCode 0389. Find the Difference
 Leetcode：Java
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode-rick.jpeg?raw=true)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/leetcode.png?raw=true)
 
 ---
 

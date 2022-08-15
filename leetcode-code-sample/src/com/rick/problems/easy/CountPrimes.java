@@ -10,7 +10,7 @@ public class CountPrimes {
         int res = new CountPrimesMulSkipEven().countPrimes(n);
         System.out.println(res);
 
-        System.out.println(new Solution().countPrimes(n));
+//        System.out.println(new Solution().countPrimes(n));
     }
 
     public int countPrimesMul(int n) {
@@ -29,15 +29,23 @@ public class CountPrimes {
     }
 }
 
-
 class CountPrimesMul {
-
+    public int countPrimes(int n) {
+        int count = 0;
+        boolean[] notPrime = new boolean[n];
+        for (int i = 2; i < n; i++)
+            if (!notPrime[i]) {
+                count++;
+                for (int j = 2; i * j < n; j++) notPrime[i * j] = true;
+            }
+        return count;
+    }
 }
 
 class CountPrimesMulSkipEven {
     public int countPrimes(int n) {
         if (n < 3) return 0;
-        Set<Integer> notPrimes = new HashSet<>();
+        Set<Integer> notPrimes = new HashSet<>(n);
         for (int i = 3; i * i < n; i += 2)
             if (!notPrimes.contains(i))
                 for (int j = i * i; j < n; j += i * 2) notPrimes.add(j);
@@ -45,7 +53,7 @@ class CountPrimesMulSkipEven {
     }
 }
 
-class Solution {
+class CountPrimesMulSkipEvenSet {
     public int countPrimes(int n) {
         if (n < 3) return 0;
         boolean[] notPrime = new boolean[n];
