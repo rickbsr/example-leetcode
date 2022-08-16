@@ -7,34 +7,48 @@ import java.util.Stack;
 public class PathSum {
 
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(5);
-        root.left = new TreeNode(4);
-        root.right = new TreeNode(8);
-        root.left.left = new TreeNode(11);
-        root.right.left = new TreeNode(13);
-        root.right.right = new TreeNode(4);
-        root.left.left.left = new TreeNode(7);
-        root.left.left.right = new TreeNode(2);
-        root.right.right.right = new TreeNode(1);
+        TreeNode root = initTreeNode();
         int sum = 22;
-        boolean res = new PathSum().hasPathSum(root, sum);
+        boolean res;
+        res = new PathSumRecursion().hasPathSum(root, sum);
+        res = new PathSumLoop().hasPathSum(root, sum);
         System.out.println(res);
     }
 
-    public boolean hasPathSum(TreeNode root, int sum) {
-        if (root == null) return false; // 遞迴起手式，終止點
-        else if (root.left == null && root.right == null // 代表為葉
-                && root.val == sum) return true; // 總和符合條件
-        // 代表有 children
-        return hasPathSum(root.left, sum - root.val)
-                || hasPathSum(root.right, sum - root.val);
-    }
+    private static TreeNode initTreeNode() {
+        TreeNode treeNode = new TreeNode(5);
 
-    public boolean hasPathSumByLoop(TreeNode root, int sum) {
+        treeNode = new TreeNode(4);
+        treeNode.right = new TreeNode(8);
+        treeNode.left.left = new TreeNode(11);
+        treeNode.right.left = new TreeNode(13);
+        treeNode.right.right = new TreeNode(4);
+        treeNode.left.left.left = new TreeNode(7);
+        treeNode.left.left.right = new TreeNode(2);
+        treeNode.right.right.right = new TreeNode(1);
+
+        return treeNode;
+    }
+}
+
+class PathSumRecursion {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) return false;
+
+        // 代表為葉
+        if (root.left == null && root.right == null) return targetSum == root.val;
+
+        return hasPathSum(root.left, targetSum - root.val)
+                || hasPathSum(root.right, targetSum - root.val);
+    }
+}
+
+class PathSumLoop {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
         Stack<TreeNode> trees = new Stack<>();
         Stack<Integer> sums = new Stack<>();
         trees.push(root);
-        sums.push(sum);
+        sums.push(targetSum);
         while (!trees.isEmpty() && (root != null)) {
             int target = sums.pop();
             TreeNode top = trees.pop();
