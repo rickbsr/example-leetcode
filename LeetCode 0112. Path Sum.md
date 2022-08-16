@@ -23,7 +23,7 @@ Leetcode：Java
 
 其中，「A Root-to-Leaf Path」的意思是，從「根」到「葉」所經過的所有節點；「根（Root）」指的是最頂端的那個節點、而「葉（Leaf）」則是指最末端的節點，也就是沒有任何子項的節點，示意圖如下：
 
-![](pics/0012_path_sum_treenode.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0012_path_sum_treenode.png?raw=true)
 
 ---
 
@@ -50,7 +50,7 @@ return hasPathSum(root.left, targetSum - root.val)
 
 因為遞迴是「分層處理」的概念，如下圖：
 
-![](pics/0012_path_sum_unit.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0012_path_sum_unit.png?raw=true)
 
 圖中的每一個框框，都屬於一個單位，也就是說，每層的處理邏輯都必須一致且相對獨立；因此當我們要往下層呼叫時，我們傳入的參數是「targetSum」，就必須要扣除當前「val」值；因為題目的要求是路徑上所有的數值總和，所以我們就必須將路過的值扣除。
 
