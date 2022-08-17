@@ -100,7 +100,6 @@ do {
 
 ```java
 if (flowerbed[flowerbed.length - 1] == 0 && n == 1 && flag > 1) return true;
-}
 ```
 
 上面代碼中的「flag > 1」，其實等同於「flowerbed[flowerbed.length - 2] == 0」；但是考量到題目提供的數列長度可能為「2」，此時，若用「flowerbed[flowerbed.length - 2] == 0」會超出邊界，丟出「ArrayIndexOutOfBoundsException」；因此建議使用「flag > 1」取代。
