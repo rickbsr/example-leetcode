@@ -21,7 +21,7 @@ Leetcode：Java
 
 然後，以「數列」表示一個「長形花圃」，在花圃中，有幾塊地種植有「花」，以「1」表示；而其餘沒有種植花的「空地」則以「0」表示，示意圖如下：
 
-![](pics/0605_can_place_flowers_des.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0605_can_place_flowers_des.png?raw=true)
 
 而「n」則是代表目前「待栽種」的花的數量，倘若我們可以將「花」任意地種植在「空地」上，只要能夠符合一個條件，就是「禁止花與花相鄰」。
 
@@ -58,7 +58,7 @@ class Solution {
 
 其實「連續三個空地法」只是一種換句話說而已；思考一下，「禁止花與花相鄰」的這個限制，若從「單一朵花」的角度來看，是不是就可以解讀成「須連續三個空地才能種植一朵花」？概念圖如下：
 
-![](pics/0605_can_place_flowers_a_set.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0605_can_place_flowers_a_set.png?raw=true)
 
 所以，我們可以設置一個「flag」，作為連續空地的標記，當該「flag」等於「3」時，代表已經有連續三塊空地，意即，可以栽種「一朵花」。
 
@@ -68,7 +68,7 @@ class Solution {
 
 仔細思考一下，由於「起點」是數列邊界，也就是說，它的左邊就是「長形花圃」的範圍外，也因此，該位置不可能種植「花」；而題目的要求是「禁止兩朵花相鄰」，也就是說，我們其實可以將左邊界視為「一塊空地」，如下：
 
-![](pics/0605_can_place_flowers_0.png)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0605_can_place_flowers_0.png?raw=true)
 
 既然左邊界是ㄧ塊空地，所以我們只須將「flag」初始值設置為「1」，就解決了。
 
