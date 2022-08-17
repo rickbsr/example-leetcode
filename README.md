@@ -17,6 +17,7 @@ LeetCode：Java
 | 0217  | [Contains Duplicate](https://rick-coder-journal.blogspot.com/2022/08/leetcode-0217-contains-duplicate.html)                     |  Easy  |
 | 0268  | [Missing Number](https://rick-coder-journal.blogspot.com/2022/08/leetcode-0268-missing-number.html)                             |  Easy  |
 | 0389  | [Find the Difference](https://rick-coder-journal.blogspot.com/2022/08/leetcode-0389-find-difference.html)                       |  Easy  |
+| 0605  | [Can Place Flowers](https://rick-coder-journal.blogspot.com/2022/08/leetcode-0605-can-place-flowers.html)                       |  Easy  |
 | 0643  | [Maximum Average Subarray I](https://rick-coder-journal.blogspot.com/2022/08/leetcode-0643-maximum-average-subarray-i.html)     |  Easy  |
 | 0686  | [Repeated String Match](https://rick-coder-journal.blogspot.com/2022/08/leetcode-0686-repeated-string-match.html)               | Medium |
 | 0961  | [N-Repeated Element in Size 2N Array](https://rick-coder-journal.blogspot.com/2022/08/leetcode-0961-n-repeated-element-in.html) |  Easy  |
