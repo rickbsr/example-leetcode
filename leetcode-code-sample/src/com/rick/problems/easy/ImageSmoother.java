@@ -12,7 +12,8 @@ public class ImageSmoother {
     public static void main(String[] args) {
         int[][] img = {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}, {11, 12, 13}, {14, 15, 16}}, res;
         res = new ImageSmootherBruteForce().imageSmoother(img);
-        res = new ImageSmootherBruteForce().imageSmoother(img);
+        res = new ImageSmootherLabel().imageSmoother(img);
+//        res = new ImageSmootherFrame().imageSmoother(img);
         for (int[] arr : res) {
             for (int i : arr) System.out.print(i + "\t ");
             System.out.println();
@@ -47,7 +48,7 @@ class ImageSmootherBruteForce {
 
 class ImageSmootherLabel {
     public int[][] imageSmoother(int[][] img) {
-        int n = img.length, m = img[0].length, cnt;
+        int n = img.length, m = img[0].length, pixelCounts;
         int[][] res = new int[n][m];
         int[][] dir = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
@@ -81,18 +82,43 @@ class ImageSmootherLabel {
                     mLabels[8] = -1;
                 }
 
-                cnt = 0;
+                pixelCounts = 0;
                 for (int l : mLabels) {
                     if (l == -1) continue;
                     int x = dir[l][0];
                     int y = dir[l][1];
-                    cnt++;
+                    pixelCounts++;
                     res[i][j] += img[i + x][j + y];
                 }
 
-                res[i][j] /= cnt;
+                res[i][j] /= pixelCounts;
             }
         }
+        return res;
+    }
+}
+
+class ImageSmootherFrame {
+    public int[][] imageSmoother(int[][] img) {
+        int m = img.length, n = img[0].length, sum, pixelCounts;
+        int[][] tempImg = new int[m + 2][n + 2], res = new int[m][n];
+        int[][] dir = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+
+        for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) tempImg[i + 1][j + 1] = img[i][j] + 1;
+
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++) {
+                sum = 0;
+                pixelCounts = 0;
+                for (int k = 0; k < 9; k++) {
+                    int tempVal = tempImg[i + 1 + dir[k][0]][j + 1 + dir[k][1]];
+                    if (tempVal != 0) {
+                        sum += tempVal;
+                        pixelCounts++;
+                    }
+                }
+                res[i][j] = sum / pixelCounts - 1;
+            }
         return res;
     }
 }
