@@ -21,6 +21,10 @@ Leetcode：Java
 
 而題目需求是將圖片進行平滑演算，意即要將每個像素點的數值修正為與鄰近九宮格的平均值，若該像素與其鄰近的像素未達八個，則盡可能計算所有符合需求的像素點，例如四個角落的像素點，又或是位於邊上的像素點。
 
+題目提供的示意圖如下：
+
+![](https://assets.leetcode.com/uploads/2021/05/03/smoother-grid.jpg)
+
 ###### 限制：陣列長寬的數值為「1 ~ 150」。
 ###### 限制：灰階值為「0 ~ 255」。
 
@@ -28,127 +32,164 @@ Leetcode：Java
 
 #### 解析一、暴力破解法
 
-既然是「暴力破解法」，其概念就是直覺、暴力。
+以這題來說，我們首先要知道的是「九宮格」的座標推算方式。
 
-而思路就是將「長形花圃」的「花槽」逐一判斷；若槽內原本就有花，就跳過，若槽內為空，就接續判斷該索引位置的前後一格是否也為空，直到「花」全部被栽種到「花圃」中或是「花圃」內已無符合之「空地」；實作代碼如下：
+為了方便演示，我們將「九宮格」的方格中分別標上「索引值」，並在「索引值」下方標示該「九宮格」的相對座標；假設「目標像素點」，也就是「中心座標」是「（x, y）」，那麼其「九宮格」的示意圖如下：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0661_9square_division.png?raw=true)
+
+而本題的問題在於並不是所有的「像素點」都擁有完整的「九宮格」；事實上，在一張四邊形的相片中，其多數的「像素點」都是擁有完整「九宮格」的；只有兩種情況可能會出現九宮格殘缺的情況；一種是，位於「角落」的像素點，而另外一種是位於「邊界上」的像素點，如下圖：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0661_9square_division_3type.png?raw=true)
+
+圖中，「藍色部分」就是擁有完整「九宮格」的像素點，而「紅色部分」因為位於「角落」的位置，僅會擁有四格，最後是「綠色部分」，位於「邊界上」的像素點，擁有六格。
+
+而「暴力破解法」的思路就是將每個「像素點」逐一計算，因此，起手式是就是「雙層迴圈」；將所有的「像素點」逐一遍歷，然後針對每個「像素點」的「九宮格」進行計算，但由於不是每個「像素點」都擁有完整的「九宮格」，因此，我們必須針對例外進行處理，完整程式碼如下：
 
 ```java
 class Solution {
-    public boolean canPlaceFlowers(int[] flowerbed, int n) {
-        for (int i = 0; i < flowerbed.length && n != 0; i++)
-            if (flowerbed[i] == 0 && // 代表當前格為空
-                    (i == 0 || flowerbed[i - 1] == 0) && // 第一格 or 前一格
-                    (i == flowerbed.length - 1 || flowerbed[i + 1] == 0)) { // 最後一格 or 後一格
-                flowerbed[i++] = 1; // 種植花後的下一格，必須為空
-                n--;
+    public int[][] imageSmoother(int[][] img) {
+        int m = img.length, n = img[0].length, sum, pixelCounts;
+        int[][] res = new int[m][n];
+        int[][] dir = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++) {
+                // Calc Smoother Value
+                sum = 0;
+                pixelCounts = 0;
+                for (int k = 0; k < 9; k++)
+                    if (0 <= i + dir[k][0] &&
+                            i + dir[k][0] < m &&
+                            0 <= j + dir[k][1] &&
+                            j + dir[k][1] < n) {
+                        sum += img[i + dir[k][0]][j + dir[k][1]];
+                        pixelCounts++;
+                    }
+                res[i][j] = sum / pixelCounts;
             }
-        return n == 0;
+        return res;
     }
 }
 ```
 
-上述的代碼雖非常直觀，但有幾點還是要特別注意一下，例如當「i」處於邊界時，即「i」為「0」與「flowerbed.length() - 1」時；因為邊界代表陣列的「起端」或「末端」，若對其進行「前後一格」的判斷，則必然有一邊會因為超出數列邊界而拋出「ArrayIndexOutOfBoundsException」。
+上述的代碼雖非常直觀，核心代碼在「第二層迴圈」內。
+
+在「第三層迴圈」中，會將「九宮格」根據「座標」依序遍歷一次；而「if」判斷式的目的是排除「座標」經計算後，其位置「小於零或大於邊界」的部分。
 
 ---
 
-#### 解析二、連續三個空地法
+#### 解析二、標記法
 
-其實「連續三個空地法」只是一種換句話說而已；思考一下，「禁止花與花相鄰」的這個限制，若從「單一朵花」的角度來看，是不是就可以解讀成「須連續三個空地才能種植一朵花」？概念圖如下：
+事實上，「標記法」的概念也跟「暴力破解法」類似；與之不同的是，在「暴力破解法」中，「標記法」是在進入「九宮格」遍歷前就先將殘缺的部分標記。
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/0605_can_place_flowers_a_set.png?raw=true)
+而先前我們說，「九宮格殘缺」的情況只會發生在「角落」與「邊界上」，所以我們只須判斷「目標像素點」是否位於「角落」或「邊界上」即可。
 
-所以，我們可以設置一個「flag」，作為連續空地的標記，當該「flag」等於「3」時，代表已經有連續三塊空地，意即，可以栽種「一朵花」。
+因此我們會將位於「邊界上」的「像素點」，排除其「邊界外」部分，即座標「x」等於「0」時的「左方邊界」；「x」等於「Col」時的「右方邊界」；「y」等於「0」時的「上方邊界」，以及「y」等於「Row」時的「下方邊界」，如下圖：
 
-接著，我們將以上述的核心思路來實作代碼。
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0661_9square_division_boundary.png?raw=true)
 
-代碼邏輯可以分為以下幾個部分，首先是「起點」的判斷，如下：
-
-仔細思考一下，由於「起點」是數列邊界，也就是說，它的左邊就是「長形花圃」的範圍外，也因此，該位置不可能種植「花」；而題目的要求是「禁止兩朵花相鄰」，也就是說，我們其實可以將左邊界視為「一塊空地」，如下：
-
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/0605_can_place_flowers_0.png?raw=true)
-
-既然左邊界是ㄧ塊空地，所以我們只須將「flag」初始值設置為「1」，就解決了。
-
-搞定「起點」的邏輯之後，就是核心的迴圈內邏輯，如下：
-
-```java
-int idx = 0, flag = 1; // 起點
-
-do {
-    if (flowerbed[idx] == 1) { // 空格
-        flag = 1;
-        idx++;
-    } else if (++flag == 3) {
-        flag = 1;
-        n--;
-    }
-} while (++idx < flowerbed.length && n != 0);
-```
-
-這邊會有兩個情況，第一是當前索引為「花」，第二是當前索引為「空地」。
-
-若遇到「花」，代表「連續空地」必須重新計算，因此，將「flag」歸「0」；事實上，這個邏輯並沒有問題，但是稍微推導一下就會發現：「由於題目的條件限制，既然這格為「花」，那麼下一個必然是「空地」，一個無法種植「花」的空地。
-
-那既然確定了下一格必定是不能種花的空地，所以，我們可以直接略過它，直接從下一格在判斷起即可；但因為略過了空地，所以我們必須將「idx」加「1」，以及將「flag」設置為「1」。
-
-反之，倘若遇到的是「空地」，那會有兩種情況，第一種情況是當前這塊空恰為「第三塊」的連續空地；這意味著，我們可以在這連續三塊空地中的「第二塊」空地種植花；但因為「第二塊空地」種花了，所以「第三塊空地」必然還是空地，既然是空地，我們當然可以將它視為下一個「連續三塊空地」的「第一塊空地」，也就是將「flag」設置為「1」。
-
-最後，末端的部分，同樣地它也是邊界值，於是就當個特地判斷即可，用一個「if」判斷式解決即可，如下：
-
-```java
-if (flowerbed[flowerbed.length - 1] == 0 && n == 1 && flag > 1) return true;
-```
-
-上面代碼中的「flag > 1」，其實等同於「flowerbed[flowerbed.length - 2] == 0」；但是考量到題目提供的數列長度可能為「2」，此時，若用「flowerbed[flowerbed.length - 2] == 0」會超出邊界，丟出「ArrayIndexOutOfBoundsException」；因此建議使用「flag > 1」取代。
-
-代碼如下：
+接著是位於「角落」的「像素點」，事實上，這部分就不需要再額外排除了，因為「角落」即位於「兩邊界」的交界處，也就是說，當我們在排除「邊界例外」時，就會一併將「角落例外」也排除了，完整程式碼如下：
 
 ```java
 class Solution {
-    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+    public int[][] imageSmoother(int[][] img) {
+        int m = img.length, n = img[0].length, pixelCounts;
+        int[][] res = new int[m][n];
+        int[][] dir = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
-        int idx = 0, flag = 1; // 起點
+        for (int i = 0; i < m; i++) {
+            int[] labels = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 
-        do {
-            if (flowerbed[idx] == 1) { // 代表空格有花
-                idx++;
-                flag = 1;
-            } else if (++flag == 3) { // 代表空格無花且已經累積連續三塊空地
-                n--; // 種花
-                flag = 1;
+            if (i == 0) {
+                labels[0] = -1;
+                labels[1] = -1;
+                labels[2] = -1;
             }
-        } while (++idx < flowerbed.length && n != 0);
 
-        // 末端
-        if (n == 1 && flowerbed[flowerbed.length - 1] == 0 && flag > 1)
-            return true;
+            if (i == m - 1) {
+                labels[6] = -1;
+                labels[7] = -1;
+                labels[8] = -1;
+            }
 
-        return n == 0;
+            for (int j = 0; j < n; j++) {
+                int[] mLabels = labels.clone();
+
+                if (j == 0) {
+                    mLabels[0] = -1;
+                    mLabels[3] = -1;
+                    mLabels[6] = -1;
+                }
+
+                if (j == n - 1) {
+                    mLabels[2] = -1;
+                    mLabels[5] = -1;
+                    mLabels[8] = -1;
+                }
+
+                pixelCounts = 0;
+                for (int l : mLabels) {
+                    if (l == -1) continue;
+                    int x = dir[l][0];
+                    int y = dir[l][1];
+                    pixelCounts++;
+                    res[i][j] += img[i + x][j + y];
+                }
+
+                res[i][j] /= pixelCounts;
+            }
+        }
+        return res;
     }
 }
 ```
 
-雖然代碼已經可以通過「LeetCode」的測試了，但後面的「if」判斷式多少顯得有些格格不入；其實「末項」也是「邊界值」，如同「起點」一樣，我們同樣可以將「邊界」視為一塊空地，因此，我們就稍微調整一下，代碼如下：
+---
+
+#### 解析三、加框法
+
+最後是「加框法」，其實就是逆向邏輯。
+
+事實上，「殘缺九宮格」僅會在圖形最外框發生，也就是邊界處；所以，反向操作，我們就將該「圖形」外加一層邊界，如此一來，就不須要再考慮「IndexOutOfBoundsException」的情形會發生，示意圖如下：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0661_9square_frame.png?raw=true)
+
+其程式碼如下：
 
 ```java
 class Solution {
-    public boolean canPlaceFlowers(int[] flowerbed, int n) {
-        int[] newFlowerbed = Arrays.copyOf(flowerbed, flowerbed.length + 1);
+    public int[][] imageSmoother(int[][] img) {
+        int m = img.length, n = img[0].length, sum, pixelCounts;
+        int[][] tempImg = new int[m + 2][n + 2], res = new int[m][n];
+        int[][] dir = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
-        for (int i = 0, flag = 1; i < newFlowerbed.length && n != 0; i++) {
-            if (newFlowerbed[i] == 1) i++;
-            else if (++flag == 3) n--;
-            else continue;
-            flag = 1;
-        }
-        return n == 0;
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                // Mapping 時，加 1
+                tempImg[i + 1][j + 1] = img[i][j] + 1;
+
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++) {
+                sum = 0;
+                pixelCounts = 0;
+                for (int k = 0; k < 9; k++) {
+                    int tempVal = tempImg[i + 1 + dir[k][0]][j + 1 + dir[k][1]];
+                    if (tempVal != 0) {
+                        sum += tempVal;
+                        pixelCounts++;
+                    }
+                }
+                // 扣除 1
+                res[i][j] = sum / pixelCounts - 1;
+            }
+        return res;
     }
 }
 ```
 
-其實邏輯都一樣，最主要的差異在於「我們產生了一個長度多『1』的新陣列」，其前面「數值」全部相同，最後一項為「0」；如此一來，我們就可以不用將最後一項當作特例判斷，自然就可以拿掉礙眼的「if」判斷式。
+上面代碼有幾處可能要稍微注意一下，由於「int」陣列的預設值為「0」，而像素的數值為「0」到「255」；但因為程式邏輯，在程式後面會利用「0」來做例外判斷，所以為了避免衝突，我們應將陣列的預設值改成「-1」；但如此一來，我們就須要對「tempImg」逐一賦值，略顯麻煩。
 
-其餘中間迴圈邏輯全部相同，此處只是筆者手癢，將「do-while Loop」改成「for Loop」，僅此而已。
+因此筆者這邊利用一點巧思，改將「img」的值再「Mapping」時加「1」，其原理異曲同工，只是有一點要特別注意，就是在返回要將多加的「1」扣除。
 
 ---
 
