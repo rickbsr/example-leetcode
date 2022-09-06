@@ -48,11 +48,11 @@ class ImageSmootherBruteForce {
 
 class ImageSmootherLabel {
     public int[][] imageSmoother(int[][] img) {
-        int n = img.length, m = img[0].length, pixelCounts;
-        int[][] res = new int[n][m];
+        int m = img.length, n = img[0].length, pixelCounts;
+        int[][] res = new int[m][n];
         int[][] dir = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < m; i++) {
             int[] labels = {0, 1, 2, 3, 4, 5, 6, 7, 8};
 
             if (i == 0) {
@@ -61,13 +61,13 @@ class ImageSmootherLabel {
                 labels[2] = -1;
             }
 
-            if (i == n - 1) {
+            if (i == m - 1) {
                 labels[6] = -1;
                 labels[7] = -1;
                 labels[8] = -1;
             }
 
-            for (int j = 0; j < m; j++) {
+            for (int j = 0; j < n; j++) {
                 int[] mLabels = labels.clone();
 
                 if (j == 0) {
@@ -76,7 +76,7 @@ class ImageSmootherLabel {
                     mLabels[6] = -1;
                 }
 
-                if (j == m - 1) {
+                if (j == n - 1) {
                     mLabels[2] = -1;
                     mLabels[5] = -1;
                     mLabels[8] = -1;
@@ -104,7 +104,10 @@ class ImageSmootherFrame {
         int[][] tempImg = new int[m + 2][n + 2], res = new int[m][n];
         int[][] dir = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
 
-        for (int i = 0; i < m; i++) for (int j = 0; j < n; j++) tempImg[i + 1][j + 1] = img[i][j] + 1;
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                // Mapping 時，加 1
+                tempImg[i + 1][j + 1] = img[i][j] + 1;
 
         for (int i = 0; i < m; i++)
             for (int j = 0; j < n; j++) {
@@ -117,6 +120,7 @@ class ImageSmootherFrame {
                         pixelCounts++;
                     }
                 }
+                // 扣除 1
                 res[i][j] = sum / pixelCounts - 1;
             }
         return res;
