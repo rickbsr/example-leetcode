@@ -60,18 +60,16 @@ class PlusOneMathSimple {
         for (int i = 0; i < digits.length; i++)
             digit += digits[i] * Math.pow(10, (digits.length - 1 - i));
 
-        // 加一
-        digit++;
-
-        // 第二階段：將「數值」轉換回「數列」
-        for (int i = 0; digit != 0; digit /= 10, i++) {
-            int idx = digits.length - 1 - i;
-            if (idx == -1) {
-                digits = new int[digits.length + 1];
-                digits[0] = 1;
-                break;
+        // 加一 && 判斷位數
+        if ((int) Math.log10(++digit) + 1 == digits.length) {
+            // 第二階段：將「數值」轉換回「數列」
+            for (int i = 0; digit != 0; digit /= 10, i++) {
+                int idx = digits.length - 1 - i;
+                digits[idx] = digit % 10;
             }
-            digits[idx] = digit % 10;
+        } else {
+            digits = new int[digits.length + 1];
+            digits[0] = 1;
         }
         return digits;
     }
@@ -87,7 +85,7 @@ class PlusOneMath {
 
         digit = digit.add(BigInteger.ONE);
 
-        if (getBigIntegerNumLength(digit) == digits.length)
+        if (bigIntegerLog10(digit) == digits.length)
             for (int i = 0; i < digits.length; i++) {
                 digits[digits.length - 1 - i] = digit.mod(BigInteger.TEN).intValue();
                 digit = digit.divide(BigInteger.TEN);
@@ -99,12 +97,10 @@ class PlusOneMath {
         return digits;
     }
 
-    private int getBigIntegerNumLength(BigInteger digit) {
+    private int bigIntegerLog10(BigInteger digit) {
         int digitSize = 0;
-
         for (; !digit.equals(BigInteger.ZERO); digitSize++)
             digit = digit.divide(BigInteger.TEN);
-
         return digitSize;
     }
 }
