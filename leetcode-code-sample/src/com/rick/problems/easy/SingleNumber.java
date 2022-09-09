@@ -6,11 +6,11 @@ import java.util.Map;
 
 public class SingleNumber {
     public static void main(String[] args) {
-        int[] nums = {4, 1, 3, 3, 2, 1, 2};
+        int[] nums = {1, 1, 2,};
         int res;
 
-        // 額外空間法
-        res = new SingleNumberExtraSpace().singleNumber(nums);
+        // 容器法
+        res = new SingleNumberContainer().singleNumber(nums);
 
         // 排序法
         res = new SingleNumberSort().singleNumber(nums);
@@ -22,7 +22,7 @@ public class SingleNumber {
     }
 }
 
-class SingleNumberExtraSpace {
+class SingleNumberContainer {
     public int singleNumber(int[] nums) {
         Map<Integer, Boolean> map = new HashMap<>();
         for (int i : nums)
