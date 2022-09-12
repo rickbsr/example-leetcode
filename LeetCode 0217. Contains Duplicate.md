@@ -102,4 +102,4 @@ class Solution {
 
 ---
 
-###### tags: `LeetCode` `Easy`
+###### tags: `leetcode` `java` `easy`
