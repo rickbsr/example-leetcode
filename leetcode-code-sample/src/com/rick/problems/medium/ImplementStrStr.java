@@ -1,13 +1,24 @@
-package com.rick.problems.easy;
+package com.rick.problems.medium;
 
-public class ImplementStrStr {
+public class FindTheIndexOfTheFirstOccurrenceInAString {
 
     public static void main(String[] args) {
         String haystack = "mississippi", needle = "pi";
-        int res = new ImplementStrStr().strStr(haystack, needle);
+        int res;
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringDefault().strStr(haystack, needle);
         System.out.println(res);
     }
 
+
+}
+
+class FindTheIndexOfTheFirstOccurrenceInAStringDefault {
+    public int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
+    }
+}
+
+class FindTheIndexOfTheFirstOccurrenceInAStringBruteForce {
     public int strStr(String haystack, String needle) {
         // 排除 needle 是空字串的情況
         if (needle.isEmpty()) return 0;
@@ -26,8 +37,10 @@ public class ImplementStrStr {
         }
         return -1;
     }
+}
 
-    public int strStrByEquals(String haystack, String needle) {
+class FindTheIndexOfTheFirstOccurrenceInAStringEquals {
+    public int strStr(String haystack, String needle) {
         int hLen = haystack.length(), nLen = needle.length();
         if (nLen == 0) return 0;
         else if (hLen >= nLen) {
@@ -36,8 +49,10 @@ public class ImplementStrStr {
         }
         return -1;
     }
+}
 
-    public int strStrByKmp(String haystack, String needle) {
+class FindTheIndexOfTheFirstOccurrenceInAStringKmp {
+    public int strStr(String haystack, String needle) {
         if (needle.length() == 0) return 0;
         if (needle.length() <= haystack.length()) {
             int[] f = failureFunction(needle.toCharArray());
@@ -64,4 +79,3 @@ public class ImplementStrStr {
         return f;
     }
 }
-
