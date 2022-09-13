@@ -3,18 +3,11 @@ package com.rick.problems.medium;
 public class FindTheIndexOfTheFirstOccurrenceInAString {
 
     public static void main(String[] args) {
-        String haystack = "mississippi", needle = "pi";
+        String haystack = "hello", needle = "ll";
         int res;
-        res = new FindTheIndexOfTheFirstOccurrenceInAStringDefault().strStr(haystack, needle);
+//        res = new FindTheIndexOfTheFirstOccurrenceInAStringBruteForce().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringEquals().strStr(haystack, needle);
         System.out.println(res);
-    }
-
-
-}
-
-class FindTheIndexOfTheFirstOccurrenceInAStringDefault {
-    public int strStr(String haystack, String needle) {
-        return haystack.indexOf(needle);
     }
 }
 
@@ -22,18 +15,11 @@ class FindTheIndexOfTheFirstOccurrenceInAStringBruteForce {
     public int strStr(String haystack, String needle) {
         // 排除 needle 是空字串的情況
         if (needle.isEmpty()) return 0;
-        // Outer For-Loop
-        for (int i = 0, j; i < haystack.length(); i++) {
-            // 排除 needle 字串的長度大於「比對字串」的長度
-            if (i + needle.length() > haystack.length()) return -1;
-            if (haystack.charAt(i) == needle.charAt(0)) { // 僅比對第一個字元
-                // 逐一字元進行比對
-                for (j = 1; j < needle.length(); j++)
-                    // 若有一項比對失敗，則直接中斷
-                    if (haystack.charAt(i + j) != needle.charAt(j)) break;
-                // 若 j 等於 needle 的長度，代表著比對成功，返回索引 i
-                if (j == needle.length()) return i;
-            }
+        outer:
+        for (int i = 0; i <= haystack.length() - needle.length(); i++) {
+            for (int j = 0; j < needle.length(); j++)
+                if (haystack.charAt(i + j) != needle.charAt(j)) continue outer;
+            return i;
         }
         return -1;
     }
@@ -41,12 +27,9 @@ class FindTheIndexOfTheFirstOccurrenceInAStringBruteForce {
 
 class FindTheIndexOfTheFirstOccurrenceInAStringEquals {
     public int strStr(String haystack, String needle) {
-        int hLen = haystack.length(), nLen = needle.length();
-        if (nLen == 0) return 0;
-        else if (hLen >= nLen) {
-            for (int i = 0; i <= hLen - nLen; i++)
-                if (haystack.substring(i, i + nLen).equals(needle)) return i;
-        }
+        if (needle.isEmpty()) return 0;
+        for (int i = 0; i <= haystack.length() - needle.length(); i++)
+            if (haystack.substring(i).startsWith(needle)) return i;
         return -1;
     }
 }
@@ -77,5 +60,11 @@ class FindTheIndexOfTheFirstOccurrenceInAStringKmp {
             if (j > 0 || str[j] == str[i - 1]) f[i] = j + 1;
         }
         return f;
+    }
+}
+
+class FindTheIndexOfTheFirstOccurrenceInAStringDefault {
+    public int strStr(String haystack, String needle) {
+        return haystack.indexOf(needle);
     }
 }
