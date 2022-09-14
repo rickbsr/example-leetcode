@@ -3,17 +3,19 @@ package com.rick.problems.medium;
 public class FindTheIndexOfTheFirstOccurrenceInAString {
 
     public static void main(String[] args) {
-        String haystack = "hello", needle = "ll";
+        String haystack = "a", needle = "a";
         int res;
-//        res = new FindTheIndexOfTheFirstOccurrenceInAStringBruteForce().strStr(haystack, needle);
-        res = new FindTheIndexOfTheFirstOccurrenceInAStringEquals().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringBruteForce().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringStartsWith().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringSum().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringKmp().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringDefault().strStr(haystack, needle);
         System.out.println(res);
     }
 }
 
 class FindTheIndexOfTheFirstOccurrenceInAStringBruteForce {
     public int strStr(String haystack, String needle) {
-        // 排除 needle 是空字串的情況
         if (needle.isEmpty()) return 0;
         outer:
         for (int i = 0; i <= haystack.length() - needle.length(); i++) {
@@ -25,11 +27,30 @@ class FindTheIndexOfTheFirstOccurrenceInAStringBruteForce {
     }
 }
 
-class FindTheIndexOfTheFirstOccurrenceInAStringEquals {
+class FindTheIndexOfTheFirstOccurrenceInAStringStartsWith {
     public int strStr(String haystack, String needle) {
         if (needle.isEmpty()) return 0;
         for (int i = 0; i <= haystack.length() - needle.length(); i++)
             if (haystack.substring(i).startsWith(needle)) return i;
+        return -1;
+    }
+}
+
+class FindTheIndexOfTheFirstOccurrenceInAStringSum {
+    public int strStr(String haystack, String needle) {
+        int needleSum = 0, haystackBaseSum = 0;
+        if (needle.isEmpty()) return 0;
+        if (haystack.length() >= needle.length()) {
+            for (int i = 0; i < needle.length(); i++) {
+                needleSum += needle.charAt(i);
+                haystackBaseSum += haystack.charAt(i);
+            }
+
+            for (int i = 0; i <= haystack.length() - needle.length(); i++)
+                if (haystackBaseSum == needleSum && haystack.substring(i).startsWith(needle)) return i;
+                else if (i == haystack.length() - needle.length()) break;
+                else haystackBaseSum += (haystack.charAt(i + needle.length()) - haystack.charAt(i));
+        }
         return -1;
     }
 }
