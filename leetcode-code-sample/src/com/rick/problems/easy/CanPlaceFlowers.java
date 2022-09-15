@@ -33,11 +33,10 @@ class CanPlaceFlowers3Empty {
         do {
             if (flowerbed[idx] == 1) { // 代表空格有花
                 idx++;
-                flag = 1;
             } else if (++flag == 3) { // 代表空格無花且已經累積連續三塊空地
                 n--; // 種花
-                flag = 1;
-            }
+            } else continue;
+            flag = 1;
         } while (++idx < flowerbed.length && n != 0);
         // 末端
         if (n == 1 && flowerbed[flowerbed.length - 1] == 0 && flag > 1) return true;
