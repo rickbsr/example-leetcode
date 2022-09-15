@@ -20,18 +20,16 @@ class CanPlaceFlowersBruteForce {
             if (flowerbed[i] == 0 && // 代表當前格為空
                     (i == 0 || flowerbed[i - 1] == 0) && // 第一格 or 前一格
                     (i == flowerbed.length - 1 || flowerbed[i + 1] == 0)) { // 最後一格 or 後一格
-                flowerbed[i] = 1;
+                flowerbed[i++] = 1;
                 n--;
-            }
+            } else if (flowerbed[i] == 1) i++;
         return n == 0;
     }
 }
 
 class CanPlaceFlowers3Empty {
     public boolean canPlaceFlowers(int[] flowerbed, int n) {
-
         int idx = 0, flag = 1; // 起點
-
         do {
             if (flowerbed[idx] == 1) { // 代表空格有花
                 idx++;
@@ -41,11 +39,8 @@ class CanPlaceFlowers3Empty {
                 flag = 1;
             }
         } while (++idx < flowerbed.length && n != 0);
-
         // 末端
-        if (n == 1 && flowerbed[flowerbed.length - 1] == 0 && flag > 1)
-            return true;
-
+        if (n == 1 && flowerbed[flowerbed.length - 1] == 0 && flag > 1) return true;
         return n == 0;
     }
 }
