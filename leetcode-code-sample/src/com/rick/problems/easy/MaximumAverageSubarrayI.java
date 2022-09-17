@@ -1,7 +1,6 @@
 package com.rick.problems.easy;
 
 public class MaximumAverageSubarrayI {
-
     public static void main(String[] args) {
         int nums[] = {5, 8, 9}, k = 1;
         double res;
