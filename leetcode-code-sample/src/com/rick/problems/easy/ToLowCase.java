@@ -56,7 +56,7 @@ class ToLowCaseJDK8 {
     }
 
     static final int A[] = new int[256];
-    
+
     static final String A_DATA =
             "\u4800\u100F\u4800\u100F\u4800\u100F\u4800\u100F\u4800\u100F\u4800\u100F\u4800" +
                     "\u100F\u4800\u100F\u4800\u100F\u5800\u400F\u5000\u400F\u5800\u400F\u6000\u400F" +

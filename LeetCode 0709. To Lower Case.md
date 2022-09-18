@@ -237,7 +237,7 @@ int getProperties(int ch) {
 最後，我們根據「JDK8」中「`String.toUpperCase()`」實作方式，稍微修改一下，程式碼，如下：
 
 ```java
-class ToLowCaseJDK8 {
+class Solution {
     public String toLowerCase(String s) {
         char[] chars = s.toCharArray();
         for (int i = 0; i < chars.length; i++)
@@ -256,12 +256,15 @@ class ToLowCaseJDK8 {
         }
         return mapChar;
     }
+
     int getProperties(int ch) {
         char offset = (char) ch;
         int props = A[offset];
         return props;
     }
+
     static final int A[] = new int[256];
+    
     static final String A_DATA =
             "\u4800\u100F\u4800\u100F\u4800\u100F\u4800\u100F\u4800\u100F\u4800\u100F\u4800" +
                     "\u100F\u4800\u100F\u4800\u100F\u5800\u400F\u5000\u400F\u5800\u400F\u6000\u400F" +
