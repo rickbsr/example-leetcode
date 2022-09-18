@@ -5,12 +5,23 @@ import java.util.*;
 public class NRepeatedElementInSize2NArray {
 
     public static void main(String[] args) {
-        int res, nums[] = {2, 6, 2, 1};
+        int res, nums[] = {3, 6, 1, 1};
         res = new NRepeatedElementInSize2NArrayList().repeatedNTimes(nums);
         res = new NRepeatedElementInSize2NArraySet().repeatedNTimes(nums);
         res = new NRepeatedElementInSize2NArrayMap().repeatedNTimes(nums);
         res = new NRepeatedElementInSize2NArraySort().repeatedNTimes(nums);
+        res = new NRepeatedElementInSize2NArraySortNeighbor().repeatedNTimes(nums);
         System.out.println(res);
+    }
+}
+
+class NRepeatedElementInSize2NBruteForce {
+    public int repeatedNTimes(int[] nums) {
+        for (int i = 0; i < nums.length; i++)
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] == nums[j]) return nums[i];
+            }
+        return -1;
     }
 }
 
@@ -47,5 +58,14 @@ class NRepeatedElementInSize2NArraySort {
     public int repeatedNTimes(int[] nums) {
         Arrays.sort(nums);
         return nums[nums[0] == nums[nums.length / 2 - 1] ? 0 : nums.length / 2];
+    }
+}
+
+class NRepeatedElementInSize2NArraySortNeighbor {
+    public int repeatedNTimes(int[] nums) {
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length / 2; i++)
+            if (nums[i] == nums[i + 1]) return nums[i];
+        return nums[nums.length - 1];
     }
 }
