@@ -142,7 +142,7 @@ class Solution {
 
 呃⋯，嗯⋯，還是看例子吧。
 
-假設「目標文本」為「haystack」，值為「`ababaabacababc`」；而「樣版字串」為「needle」，值為「`ababc`」。
+假設「目標文本」為「haystack」，值為「`abaacabababc`」；而「樣版字串」為「needle」，值為「`ababc`」。
 
 首先，我們會依據「樣版字串」來建立「PMT」；第一步，先將字串中不含自己的所有「前綴字串」列出，以「needle」來說，其結果分別為「`a`」、「`ab`」、「`aba`」、「`abab`」，如下圖：
 
@@ -170,31 +170,120 @@ class Solution {
 
 ![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_kmp_step_1.png?raw=true)
 
-在第一次匹配中，「haystack」的索引在「0」，與「樣版字串」比對，其結果是前三個字元「`aba`」匹配，對應「PMT」，值為「1」。
+一開始，起始的索引為在在「目標文本」的「第一項」；即字串「haystack」中的的第一個「`a`」。
 
-這代表，因為「`aba`」的「最大共同前後綴」，其長度為「1」。
+根據「樣版字串」執行字串比對後，其結果為前三個字元匹配，即「`aba`」。
 
-在「最大共同前後綴」為「0」的情況下，代表，我們可以將「haystack」的索引移到剛剛「比對失敗」的位置，意即，將「needle」的「`a`」對準「x」。
+對應「PMT」，其值為「1」；意思是「`aba`」的「最大共同前後綴」的長度為「1」。
 
-但在這次匹配中，比對成功的字串是「`aba`」，其「最大共同前後綴」的長度為「1」；代表它們有可以共用的「前後綴」，且長度為「1」，故，向前移動一格，就如上圖中所示。
+那這個資訊有什麼用處呢？
 
-接著就是第二次匹配，如下圖：
+如果「PMT」值為「0」，也就是不存在「最大共同前後綴」，代表其「前綴」與「後綴」沒有重疊的部分，既然不存在「相同的前後綴」，就代表字串不可以重用，所以將之移出，代表下次的比對，我們可以「比對失敗」的位置對齊「樣版字串」的第一項。
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_kmp_step_2.png?raw=true)
+若「PMT」值非「0」呢？
 
-此時，我們只要從前一步驟中「匹配失敗」的字元開始就好，也就是「haystack」字串中，索引在「3」的「`a`」字元，而與之匹配的是「needle」字串中，索引在「1」的「`b`」字元。
+那就代表該字串有存在「相同的前後綴」，而重覆的部分，我們可以重用，因此，我們就需要將「needle」往前退，而偏移多少則是根據「PMT」值。
 
-為什麼不是從頭開始匹配呢？
+這邊要注意，此處的偏移是指「needle」，而不是「haystack」，「haystack」的索引仍是在剛才「比對失敗」的位置。
 
-因為「`a`」是「共同前後綴」，因此，其必然相同，故略過。
-
-此時，比對成功的字串是「`ab`」，其不存在「共同前後綴」，所以直接將「needle」的「首項」對齊「比對失敗」，即「x」的位置，接著到開始第三次「字串匹配」，如下圖：
+第一次「字串匹配」結束後，我們接著第二次「字串匹配」，如下圖：
 
 ![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_kmp_step_2.png?raw=true)
+
+直接「匹配失敗」，此時，「PMT」值是根據「`a`」；雖然在這次字串匹配中，我們並沒有去比對「`a`」，但「`a`」的確是匹配成功的部分。
+
+而這次「PMT」值就是「0」，所以將「needle」的第一項對齊剛才「比對錯誤」的位置。
+
+執行第三次「字串比對」，如下：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_kmp_step_3.png?raw=true)
+
+此次結果與上次相同，「匹配字串」為「`a`」，值為「0」，同樣是將「needle」的第一項對齊剛才「比對錯誤」的位置。
+
+接著是第四次匹配，如下：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_kmp_step_4.png?raw=true)
+
+這是一個「完全不匹配」的例子，作法就是「完全移出」，也就是將「needle」的第一項移到「比對錯誤」之後；有些人會將其「PMT」值定義為「`-1`」，意思是一樣的，但口語上更為一致；說法就是：將「needle」的「`-1`」項對齊原本「比對錯誤」的位置。
+
+然後是第五次匹配，如下：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_kmp_step_5.png?raw=true)
+
+同樣地，「匹配字串」為「`abab`」，「PMT」為「2」，就一樣畫葫蘆；然後就再下一次「匹配」，完全匹配，收工！
+
+完整的流程圖如下：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_kmp_step_all.png?raw=true)
+
+原理懂了，實作就簡單了，代碼，如下：
+
+```java
+class Solution {
+    public int strStr(String haystack, String needle) {
+        if (needle.length() == 0) return 0;
+        if (needle.length() <= haystack.length()) {
+            int[] f = failureFunction(needle.toCharArray());
+            int i = 0, j = 0;
+            while (i < haystack.length()) {
+                if (haystack.charAt(i) == needle.charAt(j)) {
+                    i++;
+                    j++;
+                    if (j == needle.length()) return i - j;
+                } else if (j > 0) j = f[j];
+                else i++;
+            }
+        }
+        return -1;
+    }
+
+    private int[] failureFunction(char[] str) {
+        int[] pmt = new int[str.length + 1];
+        for (int i = 2; i < pmt.length; i++) {
+            int j = pmt[i - 1];
+            while (j > 0 && str[j] != str[i - 1]) j = pmt[j];
+            if (j > 0 || str[j] == str[i - 1]) pmt[i] = j + 1;
+        }
+        return pmt;
+    }
+}
+```
+
+在上述代碼中的「failureFunction()」方法中，其目的就是建立「PMT」；根據上述，我們就會知道，在「PMT」中，第一個值是「-1」、第二個值是「0」，所以我們只要從索引「2」開始判斷就可以。
 
 ---
 
-#### 解析五、BM
+#### 解析五、「BM」法
+
+接著「KMP」演算法之後的是使用「[BM Algorithm](https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string-search_algorithm)」的解題方式。
+
+與「KMP」演算法相同，「BM」演算法也是一個用於文字搜尋的演算法；「BM」也同樣是「Boyer」跟「Moore」兩位科學家名字的開頭。
+
+接著我們就來介紹一下其原理，其實「BM」演算法的核心是「壞字符」與「好後綴」兩種算法。
+
+首先是「壞字符」算法，我們直接舉例來說明，假設字串「haystack」的值為「`abcfaacddabcd`」，「needle」的值為「`abcd`」；其第一步驟的示意圖，如下：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_bm_step_1.png?raw=true)
+
+在「BM」演算法中，字串比對都是從「樣版字串」的最末位開始比對，因此，第一個比對是「haystack」的「`f`」與「needle」的「`d`」，匹配失敗；此時，我就們將「`f`」稱為的壞字符。
+
+又因為「`f`」並非，「needle」中的任何字元，也就說，只要字串的比對區間內有「`f`」，其就不可能比對成功；因此，我們可以將「needle」移到「`f`」之後，而這樣的行為，我們就稱之為「完全移出」。
+
+接著是第二步驟，如下圖：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_bm_step_2.png?raw=true)
+
+同樣從「最後一位」開始比對，先匹配「`d`」，匹配成功，接著，匹配「`c`」，同樣也成功，然後是「`a`」，「匹配失敗」，所以這次的壞字符是「`a`」。
+
+但這次要注意，「`a`」是「needle」中的字元；而且在「needle」中，仍有其它的「`a`」字符位於剛才匹配失敗的字元，也就是「`b`」字元之前；所以我們這次不能完全移除，而是必須將「needle」的「`a`」與之對齊。
+
+順帶一提，若前面有兩個「`a`」，則須對齊的靠近剛才匹配失敗的那個字元，也就是靠後的那個。
+
+然後是下次匹配，如下：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_bm_step_3.png?raw=true)
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0028_find_the_index_of_the_first_occurrence_in_a_string_bm_step_all.png?raw=true)
 
 ---
 
