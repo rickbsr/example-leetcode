@@ -106,7 +106,7 @@ class FindTheIndexOfTheFirstOccurrenceInAStringBm {
                 return haystackIdx;
             }
 
-            int goodSuffixShift = getGoodSuffix(haystack, needle, haystackIdx);
+//            int goodSuffixShift = getGoodSuffix(haystack, needle, haystackIdx);
 
 
         }
@@ -124,29 +124,29 @@ class FindTheIndexOfTheFirstOccurrenceInAStringBm {
         return 0;
     }
 
-    private int getGoodSuffix(String haystack, String needle, int index) {
-        for (int haystackIdx = index + needle.length() - 1, needleIdx = needle.length() - 1; needleIdx >= 0; haystackIdx--, needleIdx--) {
-            if (haystack.charAt(haystackIdx) != needle.charAt(needleIdx)) {
-
-//                String goodSuffix = needle.substring(needleIdx);
+//    private int getGoodSuffix(String haystack, String needle, int index) {
+//        for (int haystackIdx = index + needle.length() - 1, needleIdx = needle.length() - 1; needleIdx >= 0; haystackIdx--, needleIdx--) {
+//            if (haystack.charAt(haystackIdx) != needle.charAt(needleIdx)) {
 //
-//                String temp = haystack.substring(index, index + needle.length() - goodSuffix.length());
-//                System.out.println(temp);
-//
-//                if (temp.contains(goodSuffix)) {
-//                    return haystackIdx - index + temp.indexOf(goodSuffix);
-//                }
-//
-//                for (int i = goodSuffix.length() - 2; i >= 0; i--) {
-//                    haystack.indexOf(haystackIdx)
-//                }
-//
-////                int idxOfNeedle = needle.indexOf(badChar);
-//
-//                return haystackIdx - index - idxOfNeedle;
-            }
-        }
-    }
+////                String goodSuffix = needle.substring(needleIdx);
+////
+////                String temp = haystack.substring(index, index + needle.length() - goodSuffix.length());
+////                System.out.println(temp);
+////
+////                if (temp.contains(goodSuffix)) {
+////                    return haystackIdx - index + temp.indexOf(goodSuffix);
+////                }
+////
+////                for (int i = goodSuffix.length() - 2; i >= 0; i--) {
+////                    haystack.indexOf(haystackIdx)
+////                }
+////
+//////                int idxOfNeedle = needle.indexOf(badChar);
+////
+////                return haystackIdx - index - idxOfNeedle;
+//            }
+//        }
+//    }
 }
 
 class FindTheIndexOfTheFirstOccurrenceInAStringDefault {

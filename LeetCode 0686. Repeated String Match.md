@@ -61,4 +61,4 @@ class Solution {
 
 ---
 
-###### tags: `LeetCode` `Medium`
+###### tags: `leetcode` `java` `medium`

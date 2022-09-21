@@ -7,7 +7,7 @@ Leetcode：Java
 
 ## 概要
 
-#### 題目：[Find the Difference](https://leetcode.com/problems/find-the-difference/)
+#### 題目：[Same Tree](https://leetcode.com/problems/same-tree/)
 
 #### 難度：Easy
 
@@ -17,136 +17,131 @@ Leetcode：Java
 
 #### 說明
 
-題目會給我們兩個字串，分別為字串「s」和字串「t」。
+題目會給我們兩個「二元樹」，分別為二元樹「p」和二元樹「q」。
 
-將字串「s」的組成字元隨機排列以後，再將一個「隨機字元」在任意位置插入而形成的字串，就是字串「t」。
+而題目的要求是要我們判斷其兩者是否相同；而相同的定義是說，這兩顆「二元樹」有相同的結構以及相同的節點數值，如下：
 
-也就是說，字串「t」會比字串「s」多一個隨機字元，而題目的要求就是要我們返回那個的「隨機字元」。
-
-###### 限制：為字串「s」和字串「t」皆為小寫英文字母。
+![](https://assets.leetcode.com/uploads/2020/12/20/ex1.jpg)
 
 ---
 
-#### 解析一、排序法
+#### 解析一、遞迴法
 
-這題與之前解過的「[Missing Number](https://leetcode.com/problems/missing-number/)」、「[Single Number](https://leetcode.com/problems/single-number/)」非常類似，其解法思路基本上是一樣的。
+這題與之前解過的「[Path Sum](https://leetcode.com/problems/path-sum/)」是類似的，也是非常適合用「[遞迴](https://en.wikipedia.org/wiki/Recursion_(computer_science))」來解。
 
-同樣地，這題可以用排序的方式來解題。
-
-根據題目的敘述，我們可以得知：字串「t」除了比字串「s」多一個「隨機字元」以外，其餘的組成字母是完全相同的。
-
-所以，我們只要將字串「排序」後，就能夠輕易比較出差異？
-
-但字串能排序？
-
-在一般情況下的確是不能，但是若換成「字元」呢？在「Java」中，「字元」是可以根據「ASCII」表將之轉換成相應的「整數」。
-
-概念如下：
-
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/0389_find_the_difference_sort.png?raw=true)
-
-所以為了要讓字串的組成字母排序，我們必須先將將「字串」轉換為「字元們」；在轉換上，我們可以藉由「String.toCharArray()」來處理。
-
-在轉換完成後，我們就可以藉由迴圈將兩者一一比較，代碼如下：
+這題算是偏基本的題型，概念就是，左邊比完，比右邊，完整代碼如下：
 
 ```java
 class Solution {
-    public char findTheDifference(String s, String t) {
-        char[] sChars, tChars;
-
-        sChars = s.toCharArray();
-        tChars = t.toCharArray();
-
-        Arrays.sort(sChars);
-        Arrays.sort(tChars);
-
-        for (int i = 0; i < s.length(); i++)
-            if (tChars[i] != sChars[i]) return tChars[i];
-
-        return tChars[t.length() - 1];  
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) return true;
+        else if (p == null) return false;
+        else if (q == null) return false;
+        else if (p.val != q.val) return false;
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
     }
 }
 ```
 
----
-
-#### 解析二、容器法
-
-與「排序法」的思路不同，「扣除法」的概念是字串「t」扣除字串「s」，剩下的部分就是那個被加入的「隨機字母」。
-
-根據這個思路，其比較直覺的作法是利用「容器」。
-
-首先，同樣是將「字串」轉換成「字元」。
-
-然後先將組成字串「t」的所有字元都加入到容器之中；接著再依據字串「s」的組成，將相同的字元移出容器。
-
-在上述步驟執行完畢後，我們只要查看容器中剩餘的「字元」，而該字元就是那個被插入字串「t」的隨機字母。
-
-完整程式碼，如下：
+稍微把程式碼寫得簡短一些，如下：
 
 ```java
 class Solution {
-    public char findTheDifference(String s, String t) {
-        List<Character> characterList = new ArrayList<>();
-        for (Character c : t.toCharArray()) characterList.add(c);
-        for (Character c : s.toCharArray()) characterList.remove(c);
-        return characterList.iterator().next();
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null) return q == null;
+        if (q == null) return false;
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right) && (p.val == q.val);
+    }
+}
+```
+在「遞迴」的解題代碼中，我們是將「二元樹」拆成一個一個「樹節點」來分析，方法中的邏輯都是只針對自己當前的「樹節點」。
+
+---
+
+#### 解析二、迴圈法
+
+之前曾說過，在演算法中，若「遞迴」的解題方式，那通常都會有「迴圈」的解題方式。
+
+上述我們說，「遞迴」的解法是將「二元樹」拆成一個一個來分析，事實上，「迴圈」也是如此，要有一點的變化。
+
+什麼變化呢？
+
+如果我們能將一顆「二元樹」的所有「樹節點」按照某演算規則將其變成「線性結構」，如下圖：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0066_same_tree_trees2line.png?raw=true)
+
+至於上述中的「某種規則」，其實就是在說「[樹的遍歷](https://en.wikipedia.org/wiki/Tree_traversal)」；所謂的「樹的遍歷」是說，指的是按照某種規則，不重複地存取某種樹的所有節點的過程。
+
+一般來說，「樹的遍歷」可以分為「廣度優先搜尋」跟「深度優先搜尋」。
+
+首先，「廣度優先搜尋」，英文是「Breadth-first Search」，簡稱「BFS」，其概念就是以橫向來遍歷樹，如下：
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Sorted_binary_tree_breadth-first_traversal.svg/800px-Sorted_binary_tree_breadth-first_traversal.svg.png)
+
+然後是，「深度優先搜索」，英文是「Depth-first Search」，簡稱「DFS」，其概念就是以縱向來遍歷樹；而「深度優先搜索」又會依照其遍歷方式不同，而分為「Pre-order」、「In-order」以及「Post-order」。
+
+而由於篇幅所限，筆者在此只介紹，代碼中會用到的「Pre-order」，其流程與概念圖如下：
+
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0066_same_tree_dfs_pre.png?raw=true)
+
+其實就是一次走到底，先遇到就先記錄，至於是「右先於左」還是「左先於右」，其實都可以的，上圖是「先左再右」，所以由「F」開始，依序是「B」、「A」，然後「A」的左，沒有，「A」的右，也沒，所以至此，第一條藍色的路線已經到頭，於是往回走，到「B」，由於剛剛是走左邊，所以這次走右邊，遇到「D」，然後就繼續往左走，遇到「C」，接著又到頭了，回走到「D」發現其右邊有「E」，到「E」，但「E」的左右都是盡頭，回頭，到「B」，因為左右都走過了，再回頭，到「F」，走其右邊，到「G」，因為沒左邊，往右走，到「I」，然後「H」，然後到頭了，回到「I」，右邊也是盡頭，回到「G」，再回到「F」，就遍歷完成。
+
+所以其依序會是「F」、「B」、「Ａ」、「D」、「C」、「E」、「G」、「I」、「H」。
+
+結著，當「二元樹」結構都變成「線性」結構後，倘若我們想要比較兩個二元樹是否一致，我們只需要將兩者的線性結構中的每一個節點「逐一比較」即可。
+
+程式碼如下：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        Stack<TreeNode> pTrees = preOrder(p), qTrees = preOrder(q);
+        if (pTrees.size() != qTrees.size()) return false;
+        Iterator<TreeNode> pIterator = pTrees.iterator(), qIterator = qTrees.iterator();
+        while (pIterator.hasNext()) {
+            TreeNode pNode = pIterator.next(), qNode = qIterator.next();
+            if (pNode == null && qNode != null || qNode == null && pNode != null || pNode != null && pNode.val != qNode.val)
+                return false;
+        }
+        return true;
+    }
+
+    public Stack<TreeNode> preOrder(TreeNode root) {
+        Stack<TreeNode> rootTrees = new Stack<>(), orderTrees = new Stack<>();
+        rootTrees.push(root);
+        while (!rootTrees.isEmpty()) {
+            TreeNode currNode = rootTrees.pop();
+            orderTrees.push(currNode);
+            if (currNode != null) {
+                rootTrees.push(currNode.right);
+                rootTrees.push(currNode.left);
+            }
+        }
+        return orderTrees;
     }
 }
 ```
 
----
+別怕，雖然程式碼看起來非常長！
 
-#### 解析三、扣除法
+但其實就是兩部分，第一個部分，就是逐一比較「二元樹」線性結構中的每一個節點。
 
-但是，「容器法」畢竟牽涉到容器的進出，所以在效能上多少會被詬病。
-
-既然問題出在容器，那仔細想想，容器是真的必要嗎？
-
-還記得上述的「排序法」嗎？
-
-其之所以能將字串進行排序，那是基於其組成字元的「ASCII」碼，對吧？
-
-補充說明一下，「ACSII」是一套基於「拉丁字母」的編碼系統，在「ACSII 」中，每一個「英文字母」都有著對應的「唯一數值」；因為所有字母都有對應的「唯一數值」，所以我們是不是可以直接將「字元」視為整數來進行運算呢？
-
-因為字串「t」比字串「s」多一個「隨機字元」，所以如果我們將字串「t」的所有「字元」加總，然後再扣去字串「s」的所有「字元」加總，那麼，兩者相減的「差」，不就是該「隨機字母」所對應的「ACSII」碼？
-
-最後，我們只要將該數值根據「ACSII」表反向參照，我們就可以找到那「剩餘」的字母，完整程式碼，如下：
-
-```java
-class Solution {
-    public char findTheDifference(String s, String t) {
-        int res = 0;
-        for (int c : t.toCharArray()) res += c; // 計算 t 的總值
-        for (int c : s.toCharArray()) res -= c; // 扣去 s 的總值
-        return (char) res; // 將剩餘的值轉乘對應照的文字
-    }
-}
-```
-
----
-
-#### 解析四、互斥或法
-
-同樣地，這題也能用「互斥或」的方式來解題；其概念也是利用「互斥或與同一數值運算兩次後，其會與原來的數值一樣。」的特性。
-
-其概念也與上述解法類似。
-
-因為字串「t」只比字串「s」多一個「隨機字母」，所以如果我們將兩字串合併，變成字串「ts」；然後依據題目的描述，我們可以知道，在字串「ts」中，除了「隨機字母」以外，其它的所有字母都會是「成對」的。
-
-而我們先前說過，每個字元可以根據「ASCII」表來對應到一個「唯一數值」；再加上「互斥或」的特性，即「互斥或與同一數值運算兩次後，其會與原來的數值一樣。」。
-
-所以，我們同樣可以藉由「String.toCharArray()」，將「ts」字串轉成「字元」，再將每個字元以「互斥或」運算，而其餘下的數值就是該「隨機字母」的「ASCII」碼，，代碼如下：
-
-```java
-class Solution {
-    public char findTheDifference(String s, String t) {
-        char res = 0;
-        for (char c : (t + s).toCharArray()) res ^= c;
-        return res;
-    }
-}
-```
+而關鍵在於「`preOrder()`」，該方法主要就是將「二元樹」遍歷，並建立該「二元樹」的「線狀結構」的方法；其實並不難理解，稍微放幾個「二元樹」，打印一下就知道邏輯了。
 
 ---
 
