@@ -68,7 +68,7 @@ class Solution {
 
 如果我們能將一顆「二元樹」的所有「樹節點」按照某演算規則將其變成「線性結構」，如下圖：
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/0066_same_tree_trees2line.png?raw=true)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0100_same_tree_trees2line.png?raw=true)
 
 至於上述中的「某種規則」，其實就是在說「[樹的遍歷](https://en.wikipedia.org/wiki/Tree_traversal)」；所謂的「樹的遍歷」是說，指的是按照某種規則，不重複地存取某種樹的所有節點的過程。
 
@@ -82,7 +82,7 @@ class Solution {
 
 而由於篇幅所限，筆者在此只介紹，代碼中會用到的「Pre-order」，其流程與概念圖如下：
 
-![](https://github.com/rickbsr/LeetCode/blob/main/pics/0066_same_tree_dfs_pre.png?raw=true)
+![](https://github.com/rickbsr/LeetCode/blob/main/pics/0100_same_tree_dfs_pre.png?raw=true)
 
 其實就是一次走到底，先遇到就先記錄，至於是「右先於左」還是「左先於右」，其實都可以的，上圖是「先左再右」，所以由「F」開始，依序是「B」、「A」，然後「A」的左，沒有，「A」的右，也沒，所以至此，第一條藍色的路線已經到頭，於是往回走，到「B」，由於剛剛是走左邊，所以這次走右邊，遇到「D」，然後就繼續往左走，遇到「C」，接著又到頭了，回走到「D」發現其右邊有「E」，到「E」，但「E」的左右都是盡頭，回頭，到「B」，因為左右都走過了，再回頭，到「F」，走其右邊，到「G」，因為沒左邊，往右走，到「I」，然後「H」，然後到頭了，回到「I」，右邊也是盡頭，回到「G」，再回到「F」，就遍歷完成。
 
@@ -142,6 +142,47 @@ class Solution {
 但其實就是兩部分，第一個部分，就是逐一比較「二元樹」線性結構中的每一個節點。
 
 而關鍵在於「`preOrder()`」，該方法主要就是將「二元樹」遍歷，並建立該「二元樹」的「線狀結構」的方法；其實並不難理解，稍微放幾個「二元樹」，打印一下就知道邏輯了。
+
+然後，我們將上述代碼改寫一下，讓它變得簡潔一點，如下：
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        Stack<TreeNode> pTrees = new Stack<>(), qTrees = new Stack<>();
+        pTrees.push(p);
+        qTrees.push(q);
+
+        while (!pTrees.empty() && !qTrees.empty()) {
+            TreeNode currP = pTrees.pop();
+            TreeNode currQ = qTrees.pop();
+            if (currP == null && currQ == null) continue;
+            else if (currP == null || currQ == null) return false;
+            else if (currP.val != currQ.val) return false;
+
+            pTrees.push(currP.left);
+            pTrees.push(currP.right);
+            qTrees.push(currQ.left);
+            qTrees.push(currQ.right);
+        }
+        return true;
+    }
+}
+```
 
 ---
 
