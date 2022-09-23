@@ -72,14 +72,11 @@ class SameTreeLoop2 {
         Stack<TreeNode> pTrees = new Stack<>(), qTrees = new Stack<>();
         pTrees.push(p);
         qTrees.push(q);
-
         while (!pTrees.empty() && !qTrees.empty()) {
             TreeNode currP = pTrees.pop();
             TreeNode currQ = qTrees.pop();
             if (currP == null && currQ == null) continue;
-            else if (currP == null || currQ == null) return false;
-            else if (currP.val != currQ.val) return false;
-
+            else if (currP == null || currQ == null || currP.val != currQ.val) return false;
             pTrees.push(currP.left);
             pTrees.push(currP.right);
             qTrees.push(currQ.left);
