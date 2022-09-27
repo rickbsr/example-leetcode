@@ -4,14 +4,14 @@ import java.util.Arrays;
 
 public class FindTheIndexOfTheFirstOccurrenceInAString {
     public static void main(String[] args) {
-        String haystack = "dgsdsfgdsgdsgsdgdsgsdf", needle = "dds";
+        String haystack = "abababab", needle = "aba";
         int res;
-        res = new FindTheIndexOfTheFirstOccurrenceInAStringBruteForce().strStr(haystack, needle);
-        res = new FindTheIndexOfTheFirstOccurrenceInAStringStartsWith().strStr(haystack, needle);
-        res = new FindTheIndexOfTheFirstOccurrenceInAStringSum().strStr(haystack, needle);
+//        res = new FindTheIndexOfTheFirstOccurrenceInAStringBruteForce().strStr(haystack, needle);
+//        res = new FindTheIndexOfTheFirstOccurrenceInAStringStartsWith().strStr(haystack, needle);
+//        res = new FindTheIndexOfTheFirstOccurrenceInAStringSum().strStr(haystack, needle);
         res = new FindTheIndexOfTheFirstOccurrenceInAStringKmp().strStr(haystack, needle);
-        res = new FindTheIndexOfTheFirstOccurrenceInAStringBm().strStr(haystack, needle);
-        res = new FindTheIndexOfTheFirstOccurrenceInAStringDefault().strStr(haystack, needle);
+//        res = new FindTheIndexOfTheFirstOccurrenceInAStringBm().strStr(haystack, needle);
+//        res = new FindTheIndexOfTheFirstOccurrenceInAStringDefault().strStr(haystack, needle);
         System.out.println(res);
     }
 }
@@ -57,33 +57,30 @@ class FindTheIndexOfTheFirstOccurrenceInAStringSum {
 }
 
 class FindTheIndexOfTheFirstOccurrenceInAStringKmp {
-    public int strStr(String haystack, String needle) {
-        if (needle.length() == 0) return 0;
-        if (needle.length() <= haystack.length()) {
-            int[] f = failureFunction(needle);
-            for (int i = 0, j = 0; i < haystack.length(); ) {
-                if (haystack.charAt(i) == needle.charAt(j)) {
-                    i++;
-                    j++;
-                    if (j == needle.length()) return i - j;
-                } else if (j > 0) j = f[j];
-                else i++;
-            }
+    public int strStr(String text, String pattern) {
+        if (pattern.isEmpty()) return 0;
+        int[] pmt = failureFunction(pattern);
+        for (int textIdx = 0, patternIdx = 0; textIdx < text.length(); ) {
+            if (text.charAt(textIdx) == pattern.charAt(patternIdx)) {
+                textIdx++;
+                patternIdx++;
+                if (patternIdx == pattern.length()) return textIdx - patternIdx;
+            } else if (patternIdx > 0) patternIdx = pmt[patternIdx - 1];
+            else textIdx++;
         }
         return -1;
     }
 
-    private int[] failureFunction(String patternStr) {
-        int[] pmt = new int[patternStr.length() + 1];
-        char[] chars = patternStr.toCharArray();
-        for (int i = 2; i < pmt.length; i++) {
-            int j = pmt[i - 1];
-            while (j > 0 && chars[j] != chars[i - 1]) j = pmt[j];
-            if (j > 0 || chars[j] == chars[i - 1]) pmt[i] = j + 1;
+    private int[] failureFunction(String pattern) {
+        int[] pmt = new int[pattern.length()];
+        for (int i = 1, j = 0; i < pattern.length(); i++) {
+            while (j > 0 && pattern.charAt(i) != pattern.charAt(j)) j = pmt[j - 1];
+            if (pattern.charAt(i) == pattern.charAt(j)) pmt[i] = ++j;
         }
         return pmt;
     }
 }
+
 
 class FindTheIndexOfTheFirstOccurrenceInAStringBm {
     public int strStr(String haystack, String needle) {
