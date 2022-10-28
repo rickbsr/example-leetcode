@@ -6,13 +6,12 @@ public class FindTheIndexOfTheFirstOccurrenceInAString {
     public static void main(String[] args) {
         String haystack = "sadbutsad", needle = "sad";
         int res;
-//        res = new FindTheIndexOfTheFirstOccurrenceInAStringBruteForce().strStr(haystack, needle);
-//        res = new FindTheIndexOfTheFirstOccurrenceInAStringEquals().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringBruteForce().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringEquals().strStr(haystack, needle);
         res = new FindTheIndexOfTheFirstOccurrenceInAStringStartsWith().strStr(haystack, needle);
-//        res = new FindTheIndexOfTheFirstOccurrenceInAStringSum().strStr(haystack, needle);
-//        res = new FindTheIndexOfTheFirstOccurrenceInAStringKmp().strStr(haystack, needle);
-//        res = new FindTheIndexOfTheFirstOccurrenceInAStringBm().strStr(haystack, needle);
-//        res = new FindTheIndexOfTheFirstOccurrenceInAStringDefault().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringSum().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringKmp().strStr(haystack, needle);
+        res = new FindTheIndexOfTheFirstOccurrenceInAStringBm().strStr(haystack, needle);
         System.out.println(res);
     }
 }
@@ -91,7 +90,6 @@ class FindTheIndexOfTheFirstOccurrenceInAStringKmp {
     }
 }
 
-
 class FindTheIndexOfTheFirstOccurrenceInAStringBm {
     public int strStr(String haystack, String needle) {
         buildBadCharTable(needle);
@@ -161,11 +159,5 @@ class FindTheIndexOfTheFirstOccurrenceInAStringBm {
             if (prefix[patternLen - overlapping]) return overlapping;
         }
         return patternLen;
-    }
-}
-
-class FindTheIndexOfTheFirstOccurrenceInAStringDefault {
-    public int strStr(String haystack, String needle) {
-        return haystack.indexOf(needle);
     }
 }

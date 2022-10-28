@@ -2,6 +2,7 @@ package com.rick.problems.easy;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,26 +21,22 @@ public class PlusOne {
 }
 
 class PlusOneString {
-
     public int[] plusOne(int[] digits) {
-
         StringBuilder builder = new StringBuilder();
 
-        // 第一階段：將「數列」轉換成「數值」
+        // 將數列拼湊成數值字串
         for (int digit : digits) builder.append(digit);
 
         int idx = lastIndexOfNotNineRegEx(builder.toString());
 
-        // 第二階段：將「數值」轉換回「數列」
-        if (idx != -1) { // 若「位數不變」
-            for (int i = 0; i < digits.length; i++)  // 加「1」
-                if (i == idx) digits[i] = builder.charAt(i) - '0' + 1;
-                else if (i > idx) digits[i] = 0;
+        if (idx != -1) {
+            char[] digitsChars = builder.toString().toCharArray();
+            digitsChars[idx]++;
+            for (int i = 0; i < digits.length; i++) digits[i] = i > idx ? 0 : digitsChars[i] - '0';
         } else { // 全為「9」的情況，位數改變，須建立新數列
             digits = new int[digits.length + 1];
             digits[0] = 1;
         }
-
         return digits;
     }
 
@@ -50,6 +47,17 @@ class PlusOneString {
         return idx;
     }
 }
+
+
+//        if (idx != -1) { // 若「位數不變」
+//            for (int i = 0; i < digits.length; i++)  // 加「1」
+//                if (i == idx) digits[i] = builder.charAt(i) - '0' + 1;
+//                else if (i > idx) digits[i] = 0;
+//        } else { // 全為「9」的情況，位數改變，須建立新數列
+//            digits = new int[digits.length + 1];
+//            digits[0] = 1;
+//        }
+
 
 class PlusOneMathSimple {
 
