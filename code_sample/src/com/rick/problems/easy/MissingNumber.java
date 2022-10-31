@@ -1,16 +1,26 @@
 package com.rick.problems.easy;
 
-import java.util.Arrays;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class MissingNumber {
     public static void main(String[] args) {
-        int res, nums[] = {9, 6, 4, 2, 3, 5, 7, 0, 1};
-        res = new MissingNumberSoft().missingNumber(nums);
-        res = new MissingNumberSub().missingNumber(nums);
-        res = new MissingNumberSubWithJava8().missingNumber(nums);
-        res = new MissingNumberXor().missingNumber(nums);
+        int res, nums[] = {0, 1};
+        res = new MissingNumberContainer().missingNumber(nums);
+//        res = new MissingNumberSoft().missingNumber(nums);
+//        res = new MissingNumberSub().missingNumber(nums);
+//        res = new MissingNumberSubWithJava8().missingNumber(nums);
+//        res = new MissingNumberXor().missingNumber(nums);
         System.out.println(res);
+    }
+}
+
+class MissingNumberContainer {
+    public int missingNumber(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i <= nums.length; i++) set.add(i);
+        for (int i : nums) set.remove(i);
+        return set.iterator().next();
     }
 }
 

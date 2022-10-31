@@ -11,7 +11,6 @@ public class ContainsDuplicate {
         res = new ContainsDuplicateSort().containsDuplicate(nums);
         res = new ContainsDuplicateSet().containsDuplicate(nums);
         res = new ContainsDuplicateOneLine().containsDuplicate(nums);
-        res = new ContainsDuplicateSetEveryTimes().containsDuplicate(nums);
         res = new ContainsDuplicateMap().containsDuplicate(nums);
         System.out.println(res);
     }
@@ -37,17 +36,6 @@ class ContainsDuplicateSet {
 class ContainsDuplicateOneLine {
     public boolean containsDuplicate(int[] nums) {
         return nums.length != new HashSet<>(Arrays.stream(nums).boxed().collect(Collectors.toList())).size();
-    }
-}
-
-class ContainsDuplicateSetEveryTimes {
-    public boolean containsDuplicate(int[] nums) {
-        Set<Integer> set = new HashSet<>();
-        for (int i = 0; i < nums.length; i++) {
-            set.add(nums[i]);
-            if (set.size() == i) return true;
-        }
-        return false;
     }
 }
 
