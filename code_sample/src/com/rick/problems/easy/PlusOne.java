@@ -11,16 +11,15 @@ public class PlusOne {
     public static void main(String[] args) {
         int[] digits = {9, 9, 9, 9}, res;
 
-        res = new PlusOneString().plusOne(digits);
-        res = new PlusOneMathSimple().plusOne(digits);
+        res = new PlusOneStringRegEx().plusOne(digits);
+        res = new PlusOneBF().plusOne(digits);
         res = new PlusOneMath().plusOne(digits);
-        res = new PlusOneOneByOnFromUnitsDigit().plusOne(digits);
 
         for (int i : res) System.out.print(i + " ");
     }
 }
 
-class PlusOneString {
+class PlusOneStringRegEx {
     public int[] plusOne(int[] digits) {
         StringBuilder builder = new StringBuilder();
 
@@ -48,37 +47,15 @@ class PlusOneString {
     }
 }
 
-
-//        if (idx != -1) { // 若「位數不變」
-//            for (int i = 0; i < digits.length; i++)  // 加「1」
-//                if (i == idx) digits[i] = builder.charAt(i) - '0' + 1;
-//                else if (i > idx) digits[i] = 0;
-//        } else { // 全為「9」的情況，位數改變，須建立新數列
-//            digits = new int[digits.length + 1];
-//            digits[0] = 1;
-//        }
-
-
-class PlusOneMathSimple {
-
+class PlusOneBF {
     public int[] plusOne(int[] digits) {
-        int digit = 0;
-
-        // 第一階段：將「數列」轉換成「數值」
-        for (int i = 0; i < digits.length; i++)
-            digit += digits[i] * Math.pow(10, (digits.length - 1 - i));
-
-        // 加一 && 判斷位數
-        if ((int) Math.log10(++digit) + 1 == digits.length) {
-            // 第二階段：將「數值」轉換回「數列」
-            for (int i = 0; digit != 0; digit /= 10, i++) {
-                int idx = digits.length - 1 - i;
-                digits[idx] = digit % 10;
-            }
-        } else {
-            digits = new int[digits.length + 1];
-            digits[0] = 1;
-        }
+        for (int i = digits.length - 1; i >= 0; i--)
+            if (digits[i] != 9) {
+                digits[i]++;
+                return digits;
+            } else digits[i] = 0;
+        digits = new int[digits.length + 1];
+        digits[0] = 1;
         return digits;
     }
 }
@@ -110,18 +87,5 @@ class PlusOneMath {
         for (; !digit.equals(BigInteger.ZERO); digitSize++)
             digit = digit.divide(BigInteger.TEN);
         return digitSize;
-    }
-}
-
-class PlusOneOneByOnFromUnitsDigit {
-    public int[] plusOne(int[] digits) {
-        for (int i = digits.length - 1; i >= 0; i--)
-            if (digits[i] != 9) {
-                digits[i]++;
-                return digits;
-            } else digits[i] = 0;
-        digits = new int[digits.length + 1];
-        digits[0] = 1;
-        return digits;
     }
 }
