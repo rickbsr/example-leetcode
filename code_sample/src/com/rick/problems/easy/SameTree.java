@@ -25,10 +25,9 @@ public class SameTree {
 
         res = new SameTreeRecursion().isSameTree(p, q);
         res = new SameTreeLoop().isSameTree(p, q);
+        res = new SameTreeLoopPlus().isSameTree(p, q);
         System.out.println(res);
     }
-
-
 }
 
 class SameTreeRecursion {
@@ -67,7 +66,7 @@ class SameTreeLoop {
     }
 }
 
-class SameTreeLoop2 {
+class SameTreeLoopPlus {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         Stack<TreeNode> pTrees = new Stack<>(), qTrees = new Stack<>();
         pTrees.push(p);

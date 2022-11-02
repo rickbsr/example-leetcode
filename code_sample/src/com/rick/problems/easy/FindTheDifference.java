@@ -13,9 +13,9 @@ public class FindTheDifference {
 
         res = new FindTheDifferenceSort().findTheDifference(s, t);
 
-        res = new FindTheDifferenceSubList().findTheDifference(s, t);
+        res = new FindTheDifferenceContainer().findTheDifference(s, t);
 
-        res = new FindTheDifferenceSubMath().findTheDifference(s, t);
+        res = new FindTheDifferenceSub().findTheDifference(s, t);
 
         res = new FindTheDifferenceXor().findTheDifference(s, t);
 
@@ -40,7 +40,7 @@ class FindTheDifferenceSort {
     }
 }
 
-class FindTheDifferenceSubList {
+class FindTheDifferenceContainer {
     public char findTheDifference(String s, String t) {
         List<Character> characterList = new ArrayList<>();
         for (Character c : t.toCharArray()) characterList.add(c);
@@ -49,7 +49,7 @@ class FindTheDifferenceSubList {
     }
 }
 
-class FindTheDifferenceSubMath {
+class FindTheDifferenceSub {
     public char findTheDifference(String s, String t) {
         int res = 0;
         for (int c : t.toCharArray()) res += c; // 計算 t 的總值
