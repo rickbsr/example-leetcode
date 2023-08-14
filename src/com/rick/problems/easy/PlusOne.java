@@ -2,23 +2,32 @@ package com.rick.problems.easy;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.rick.constant.Constant.BLANK_STRING;
 
 public class PlusOne {
 
     public static void main(String[] args) {
         int[] digits = {9, 9, 9, 9}, res;
 
+        // 字串轉換法
         res = new PlusOneStringRegEx().plusOne(digits);
-        res = new PlusOneBF().plusOne(digits);
+
+        // 暴力演算法
+        res = new PlusOneBruteForce().plusOne(digits);
+
+        // 數學運算法
         res = new PlusOneMath().plusOne(digits);
 
-        for (int i : res) System.out.print(i + " ");
+        for (int i : res) System.out.print(i + BLANK_STRING);
     }
 }
 
+/**
+ * 方式一、字串轉換法
+ */
 class PlusOneStringRegEx {
     public int[] plusOne(int[] digits) {
         StringBuilder builder = new StringBuilder();
@@ -47,7 +56,10 @@ class PlusOneStringRegEx {
     }
 }
 
-class PlusOneBF {
+/**
+ * 方式二、暴力演算法
+ */
+class PlusOneBruteForce {
     public int[] plusOne(int[] digits) {
         for (int i = digits.length - 1; i >= 0; i--)
             if (digits[i] != 9) {
@@ -60,6 +72,9 @@ class PlusOneBF {
     }
 }
 
+/**
+ * 方式三、數學運算法
+ */
 class PlusOneMath {
     public int[] plusOne(int[] digits) {
 
