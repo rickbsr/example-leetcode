@@ -2,7 +2,8 @@ package com.rick.problems.easy;
 
 import com.rick.common.TreeNode;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Stack;
 
 public class SameTree {
 
@@ -24,13 +25,30 @@ public class SameTree {
         boolean res;
 
         res = new SameTreeRecursion().isSameTree(p, q);
+        res = new SameTreeRecursionPlus().isSameTree(p, q);
         res = new SameTreeLoop().isSameTree(p, q);
         res = new SameTreeLoopPlus().isSameTree(p, q);
         System.out.println(res);
     }
 }
 
+/**
+ * 方式一、遞迴法
+ */
 class SameTreeRecursion {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) return true;
+        else if (p == null) return false;
+        else if (q == null) return false;
+        else if (p.val != q.val) return false;
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+}
+
+/**
+ * 方式一、遞迴法（優化）
+ */
+class SameTreeRecursionPlus {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if (p == null) return q == null;
         if (q == null) return false;
@@ -38,6 +56,9 @@ class SameTreeRecursion {
     }
 }
 
+/**
+ * 方式二、迴圈法
+ */
 class SameTreeLoop {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         Stack<TreeNode> pTrees = preOrder(p), qTrees = preOrder(q);
@@ -66,6 +87,9 @@ class SameTreeLoop {
     }
 }
 
+/**
+ * 方式二、迴圈法（優化）
+ */
 class SameTreeLoopPlus {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         Stack<TreeNode> pTrees = new Stack<>(), qTrees = new Stack<>();

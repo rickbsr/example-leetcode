@@ -12,13 +12,8 @@ public class PlusOne {
     public static void main(String[] args) {
         int[] digits = {9, 9, 9, 9}, res;
 
-        // 字串轉換法
         res = new PlusOneStringRegEx().plusOne(digits);
-
-        // 暴力演算法
         res = new PlusOneBruteForce().plusOne(digits);
-
-        // 數學運算法
         res = new PlusOneMath().plusOne(digits);
 
         for (int i : res) System.out.print(i + BLANK_STRING);

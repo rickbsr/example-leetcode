@@ -4,13 +4,8 @@ public class ToLowCase {
     public static void main(String[] args) {
         String str = "Hello", res;
 
-        // 「ASCII」加法
         res = new ToLowCaseAsciiAdd().toLowerCase(str);
-
-        // 「ASCII」互斥或法
         res = new ToLowCaseAsciiXor().toLowerCase(str);
-
-        // 原生「Java API」
         res = new ToLowCaseDefault().toLowerCase(str);
         System.out.println(res);
     }
