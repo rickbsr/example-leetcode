@@ -1,11 +1,6 @@
 package com.rick.problems.easy;
 
-import javax.swing.tree.RowMapper;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
+import static com.rick.constant.Constant.BLANK_STRING;
 
 public class ImageSmoother {
 
@@ -13,23 +8,24 @@ public class ImageSmoother {
         int[][] img = {{2, 3, 4}, {5, 6, 7}, {8, 9, 10}, {11, 12, 13}, {14, 15, 16}}, res;
         res = new ImageSmootherBruteForce().imageSmoother(img);
         res = new ImageSmootherLabel().imageSmoother(img);
-//        res = new ImageSmootherFrame().imageSmoother(img);
+        res = new ImageSmootherFrame().imageSmoother(img);
         for (int[] arr : res) {
-            for (int i : arr) System.out.print(i + "\t ");
+            for (int i : arr) System.out.print(i + "\t" + BLANK_STRING);
             System.out.println();
         }
     }
 }
 
+/**
+ * 方式一、暴力演算法
+ */
 class ImageSmootherBruteForce {
-
     public int[][] imageSmoother(int[][] img) {
         int m = img.length, n = img[0].length, sum, pixelCounts;
         int[][] res = new int[m][n];
         int[][] dir = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, -1}, {0, 0}, {0, 1}, {1, -1}, {1, 0}, {1, 1}};
         for (int i = 0; i < m; i++)
             for (int j = 0; j < n; j++) {
-                // Calc Smoother Value
                 sum = 0;
                 pixelCounts = 0;
                 for (int k = 0; k < 9; k++)
@@ -46,6 +42,9 @@ class ImageSmootherBruteForce {
     }
 }
 
+/**
+ * 方式二、標記法
+ */
 class ImageSmootherLabel {
     public int[][] imageSmoother(int[][] img) {
         int m = img.length, n = img[0].length, pixelCounts;
@@ -98,6 +97,9 @@ class ImageSmootherLabel {
     }
 }
 
+/**
+ * 方式三、加框法
+ */
 class ImageSmootherFrame {
     public int[][] imageSmoother(int[][] img) {
         int m = img.length, n = img[0].length, sum, pixelCounts;

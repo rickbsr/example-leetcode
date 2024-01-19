@@ -3,7 +3,6 @@ package com.rick.problems.easy;
 public class ToLowCase {
     public static void main(String[] args) {
         String str = "Hello", res;
-
         res = new ToLowCaseAsciiAdd().toLowerCase(str);
         res = new ToLowCaseAsciiXor().toLowerCase(str);
         res = new ToLowCaseDefault().toLowerCase(str);

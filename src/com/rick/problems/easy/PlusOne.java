@@ -26,17 +26,13 @@ public class PlusOne {
 class PlusOneStringRegEx {
     public int[] plusOne(int[] digits) {
         StringBuilder builder = new StringBuilder();
-
-        // 將數列拼湊成數值字串
         for (int digit : digits) builder.append(digit);
-
         int idx = lastIndexOfNotNineRegEx(builder.toString());
-
         if (idx != -1) {
             char[] digitsChars = builder.toString().toCharArray();
             digitsChars[idx]++;
             for (int i = 0; i < digits.length; i++) digits[i] = i > idx ? 0 : digitsChars[i] - '0';
-        } else { // 全為「9」的情況，位數改變，須建立新數列
+        } else {
             digits = new int[digits.length + 1];
             digits[0] = 1;
         }

@@ -1,34 +1,21 @@
 package com.rick.problems.medium;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CountPrimes {
     public static void main(String[] args) {
         int n = 3, res;
         res = new CountPrimesBruteForce().countPrimes(n);
-        res = new CountPrimesBruteForceOdd().countPrimes(n);
         res = new CountPrimesSieveOfEratosthenes().countPrimes(n);
-        res = new CountPrimesSieveOfEratosthenesSet().countPrimes(n);
         System.out.println(res);
     }
 }
 
+/**
+ * 方式一、暴力演算法
+ */
 class CountPrimesBruteForce {
-    public int countPrimes(int n) {
-        int res = 0;
-        for (int i = 2; i < n; i++)
-            if (isPrime(i)) res++;
-        return res;
-    }
-
-    private boolean isPrime(int i) {
-        for (int j = 2; j < i; j++)
-            if (i % j == 0) return false;
-        return true;
-    }
-}
-
-class CountPrimesBruteForceOdd {
     public int countPrimes(int n) {
         int res = 0;
         if (n < 3) return res;
@@ -44,23 +31,10 @@ class CountPrimesBruteForceOdd {
     }
 }
 
+/**
+ * 方式二、埃拉托斯特尼篩法
+ */
 class CountPrimesSieveOfEratosthenes {
-    public int countPrimes(int n) {
-        if (n < 3) return 0;
-        boolean[] notPrime = new boolean[n];
-        int res = n / 2;
-        for (int i = 3; i * i < n; i += 2)
-            if (!notPrime[i])
-                for (int j = i * i; j < n; j += i * 2)
-                    if (!notPrime[j]) {
-                        notPrime[j] = true;
-                        res--;
-                    }
-        return res;
-    }
-}
-
-class CountPrimesSieveOfEratosthenesSet {
     public int countPrimes(int n) {
         if (n < 3) return 0;
         Set<Integer> notPrimesSet = new HashSet<>();

@@ -9,6 +9,9 @@ public class SumOfTwoIntegers {
     }
 }
 
+/**
+ * 方式一、迴圈法
+ */
 class SumOfTwoIntegersLoop {
     public int getSum(int a, int b) {
         while (b != 0) {
@@ -20,6 +23,9 @@ class SumOfTwoIntegersLoop {
     }
 }
 
+/**
+ * 方式二、遞迴法
+ */
 class SumOfTwoIntegersRecursion {
     public int getSum(int a, int b) {
         return b == 0 ? a : getSum(a ^ b, (a & b) << 1);

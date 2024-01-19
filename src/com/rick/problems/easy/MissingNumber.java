@@ -1,20 +1,25 @@
 package com.rick.problems.easy;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 public class MissingNumber {
     public static void main(String[] args) {
-        int res, nums[] = {0, 1};
+        int[] nums = {0, 1};
+        int res;
         res = new MissingNumberContainer().missingNumber(nums);
-//        res = new MissingNumberSoft().missingNumber(nums);
-//        res = new MissingNumberSub().missingNumber(nums);
-//        res = new MissingNumberSubWithJava8().missingNumber(nums);
-//        res = new MissingNumberXor().missingNumber(nums);
+        res = new MissingNumberSoft().missingNumber(nums);
+        res = new MissingNumberSub().missingNumber(nums);
+        res = new MissingNumberXor().missingNumber(nums);
         System.out.println(res);
     }
 }
 
+/**
+ * 方式一、容器法
+ */
 class MissingNumberContainer {
     public int missingNumber(int[] nums) {
         Set<Integer> set = new HashSet<>();
@@ -24,6 +29,9 @@ class MissingNumberContainer {
     }
 }
 
+/**
+ * 方式二、排序法
+ */
 class MissingNumberSoft {
     public int missingNumber(int[] nums) {
         Arrays.sort(nums);
@@ -32,21 +40,18 @@ class MissingNumberSoft {
     }
 }
 
+/**
+ * 方式三、扣除法
+ */
 class MissingNumberSub {
-    public int missingNumber(int[] nums) {
-        // calc Sum by Trapezoid Formula
-        int sum = (nums.length + 1) * nums.length / 2;
-        for (int n : nums) sum -= n; // 減去陣列所有項之總和
-        return sum;
-    }
-}
-
-class MissingNumberSubWithJava8 {
     public int missingNumber(int[] nums) {
         return (nums.length + 1) * nums.length / 2 - IntStream.of(nums).sum();
     }
 }
 
+/**
+ * 方式四、互斥或法
+ */
 class MissingNumberXor {
     public int missingNumber(int[] nums) {
         int check = 0;

@@ -2,7 +2,6 @@ package com.rick.problems.easy;
 
 import com.rick.common.TreeNode;
 
-import java.util.Iterator;
 import java.util.Stack;
 
 public class SameTree {
@@ -25,9 +24,7 @@ public class SameTree {
         boolean res;
 
         res = new SameTreeRecursion().isSameTree(p, q);
-        res = new SameTreeRecursionPlus().isSameTree(p, q);
         res = new SameTreeLoop().isSameTree(p, q);
-        res = new SameTreeLoopPlus().isSameTree(p, q);
         System.out.println(res);
     }
 }
@@ -36,19 +33,6 @@ public class SameTree {
  * 方式一、遞迴法
  */
 class SameTreeRecursion {
-    public boolean isSameTree(TreeNode p, TreeNode q) {
-        if (p == null && q == null) return true;
-        else if (p == null) return false;
-        else if (q == null) return false;
-        else if (p.val != q.val) return false;
-        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
-    }
-}
-
-/**
- * 方式一、遞迴法（優化）
- */
-class SameTreeRecursionPlus {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if (p == null) return q == null;
         if (q == null) return false;
@@ -60,37 +44,6 @@ class SameTreeRecursionPlus {
  * 方式二、迴圈法
  */
 class SameTreeLoop {
-    public boolean isSameTree(TreeNode p, TreeNode q) {
-        Stack<TreeNode> pTrees = preOrder(p), qTrees = preOrder(q);
-        if (pTrees.size() != qTrees.size()) return false;
-        Iterator<TreeNode> pIterator = pTrees.iterator(), qIterator = qTrees.iterator();
-        while (pIterator.hasNext()) {
-            TreeNode pNode = pIterator.next(), qNode = qIterator.next();
-            if (pNode == null && qNode != null || qNode == null && pNode != null || pNode != null && pNode.val != qNode.val)
-                return false;
-        }
-        return true;
-    }
-
-    public Stack<TreeNode> preOrder(TreeNode root) {
-        Stack<TreeNode> rootTrees = new Stack<>(), orderTrees = new Stack<>();
-        rootTrees.push(root);
-        while (!rootTrees.isEmpty()) {
-            TreeNode currNode = rootTrees.pop();
-            orderTrees.push(currNode);
-            if (currNode != null) {
-                rootTrees.push(currNode.right);
-                rootTrees.push(currNode.left);
-            }
-        }
-        return orderTrees;
-    }
-}
-
-/**
- * 方式二、迴圈法（優化）
- */
-class SameTreeLoopPlus {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         Stack<TreeNode> pTrees = new Stack<>(), qTrees = new Stack<>();
         pTrees.push(p);

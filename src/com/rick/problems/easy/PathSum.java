@@ -31,18 +31,21 @@ public class PathSum {
     }
 }
 
+/**
+ * 方式一、遞迴法
+ */
 class PathSumRecursion {
     public boolean hasPathSum(TreeNode root, int targetSum) {
         if (root == null) return false;
-
-        // 代表為葉
         if (root.left == null && root.right == null) return targetSum == root.val;
-
         return hasPathSum(root.left, targetSum - root.val)
                 || hasPathSum(root.right, targetSum - root.val);
     }
 }
 
+/**
+ * 方式二、迴圈法
+ */
 class PathSumLoop {
     public boolean hasPathSum(TreeNode root, int targetSum) {
         Stack<TreeNode> trees = new Stack<>();

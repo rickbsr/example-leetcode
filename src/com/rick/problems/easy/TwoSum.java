@@ -9,7 +9,6 @@ public class TwoSum {
     public static void main(String[] args) {
         int[] nums = {3, 2, 4}, res;
         int target = 6;
-
         res = new TwoSumBruteForce().twoSum(nums, target);
         res = new TwoSumMap().twoSum(nums, target);
         for (int i : res) System.out.print(i + BLANK_STRING);

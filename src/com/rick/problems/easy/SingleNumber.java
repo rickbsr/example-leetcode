@@ -9,19 +9,16 @@ public class SingleNumber {
         int[] nums = {1, 1, 2,};
         int res;
 
-        // 容器法
         res = new SingleNumberContainer().singleNumber(nums);
-
-        // 排序法
         res = new SingleNumberSort().singleNumber(nums);
-
-        // 互斥或法
         res = new SingleNumberXor().singleNumber(nums);
-
         System.out.println(res);
     }
 }
 
+/**
+ * 方式一、容器法
+ */
 class SingleNumberContainer {
     public int singleNumber(int[] nums) {
         Map<Integer, Boolean> map = new HashMap<>();
@@ -31,6 +28,9 @@ class SingleNumberContainer {
     }
 }
 
+/**
+ * 方式二、排序法
+ */
 class SingleNumberSort {
     public int singleNumber(int[] nums) {
         Arrays.sort(nums);
@@ -41,6 +41,9 @@ class SingleNumberSort {
     }
 }
 
+/**
+ * 方式三、互斥或法
+ */
 class SingleNumberXor {
     public int singleNumber(int[] nums) {
         return Arrays.stream(nums).reduce(0, (a, b) -> a ^ b);

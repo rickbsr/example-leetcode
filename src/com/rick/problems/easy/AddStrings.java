@@ -1,13 +1,17 @@
-package com.rick.problems;
+package com.rick.problems.easy;
 
 public class AddStrings {
-
     public static void main(String[] args) {
         String num1 = "100", num2 = "72";
-        String res = new AddStrings().addStrings(num1, num2);
+        String res = new AddStringsBruteForce().addStrings(num1, num2);
         System.out.println(res);
     }
+}
 
+/**
+ * 方式一、暴力演算法
+ */
+class AddStringsBruteForce {
     public String addStrings(String num1, String num2) {
         StringBuilder sb = new StringBuilder();
         int len1 = num1.length(), len2 = num2.length(), carry = 0;
