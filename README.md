@@ -6,7 +6,7 @@
 
 |No.|Level|Problem|
 |:-:|:-:|:--|
-|0001|Easy|Two Sum|
+|0001|Easy|[Two Sum](https://github.com/rickbsr/Leetcode/blob/main/Leetcode-Notes/lc0001.md)|
 |0028|Medium|Find the Index of the First Occurrence in a String|
 |0066|Easy|Plus One|
 |0100|Easy|Same Tree|
