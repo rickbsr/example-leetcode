@@ -2,7 +2,7 @@
 
 ![leetcode-cover.png](Leetcode-Notes/pic/cover/leetcode-cover.png)
 
-## 題目列表
+## 題目筆記
 
 |No.|Level|Problem|
 |:-:|:-:|:--|
